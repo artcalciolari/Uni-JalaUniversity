@@ -10,8 +10,8 @@ Hello there! my name is Arthur calciolari. I'm interested in finance, black hole
 
 ## Feel free to contact me:
 - E-mail: arthur_calciolari@outlook.com
-- LinkedIn: ![LinkedIn profile] (https://www.linkedin.com/in/arthur-calciolari-078138224/)
-- GitHub: ![GitHub profile] (https://github.com/artcalciolari)
+- LinkedIn: https://www.linkedin.com/in/arthur-calciolari-078138224/
+- GitHub: https://github.com/artcalciolari
 
 ## Languages
 - Java
