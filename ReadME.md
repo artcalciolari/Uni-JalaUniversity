@@ -21,5 +21,7 @@ Hello there! my name is Arthur calciolari. I'm interested in finance, black hole
 - Git (sort of)
 
 ## GitHub stats
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=artcalciolari&show_icons=true&count_private=true)
+<div align="center">
+  <img height="150em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=artcalciolari&layout=compact&langs_count=7&theme=bright"/>
+</div>
 
