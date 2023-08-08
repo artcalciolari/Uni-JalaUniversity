@@ -1,4 +1,4 @@
-import HandlerClasses.HashValuesHandler;
+import handlerClasses.Regiao;
 
 import javax.swing.*;
 
@@ -9,7 +9,7 @@ public class Main {
 
         if (JOptionPane.YES_OPTION == input) {
             String filePath = JOptionPane.showInputDialog(null, "Insert your filepath and name:");
-            HashValuesHandler hv = new HashValuesHandler(filePath);
+            Regiao hv = new Regiao(filePath);
             hv.fetchCsv();
         } else {
             JOptionPane.showMessageDialog(null, "Shutting down.\nHave a nice day :)");

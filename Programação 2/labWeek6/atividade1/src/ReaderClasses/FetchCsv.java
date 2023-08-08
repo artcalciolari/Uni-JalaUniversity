@@ -1,4 +1,4 @@
-package ReaderClasses;
+package readerClasses;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
