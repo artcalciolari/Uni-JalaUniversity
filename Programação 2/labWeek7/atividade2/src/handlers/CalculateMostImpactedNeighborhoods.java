@@ -12,13 +12,15 @@ class CalculateMostImpactedNeighborhoods {
         double biggestMortalityRate = 0.0;
 
         for (CovidData districtData : covidDataList) {
-            String district = districtData.getCityName();
+            String district = districtData.cityName();
             double infectionRateIncreasesOrDefault = infectionRateIncreases.getOrDefault(district, 0.0);
             double mortalityRatesOrDefault = mortalityRates.getOrDefault(district, 0.0);
 
             if (infectionRateIncreasesOrDefault > biggestInfectionRate) {
                 biggestInfectionRate = infectionRateIncreasesOrDefault;
-                mostImpacted.clear();
+                if (mostImpacted.contains(district)) {
+                    continue;
+                }
                 mostImpacted.add(district);
             } else if (infectionRateIncreasesOrDefault == biggestInfectionRate) {
                 mostImpacted.add(district);
@@ -26,7 +28,9 @@ class CalculateMostImpactedNeighborhoods {
 
             if (mortalityRatesOrDefault > biggestMortalityRate) {
                 biggestMortalityRate = mortalityRatesOrDefault;
-                mostImpacted.clear();
+                if (mostImpacted.contains(district)) {
+                    continue;
+                }
                 mostImpacted.add(district);
             } else if (mortalityRatesOrDefault == biggestMortalityRate) {
                 mostImpacted.add(district);

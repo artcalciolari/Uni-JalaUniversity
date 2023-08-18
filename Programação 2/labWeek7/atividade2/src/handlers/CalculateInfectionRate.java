@@ -12,8 +12,8 @@ class CalculateInfectionRate {
             CovidData previousData = covidDataList.get(i - 1);
             CovidData currentData = covidDataList.get(i);
 
-            double infectionRateIncrease = currentData.getCovidCases() - previousData.getCovidCases();
-            infectionRateIncreases.put(currentData.getCityName(), infectionRateIncrease);
+            double infectionRateIncrease = (currentData.covidCases() - (double) previousData.covidCases() / previousData.covidCases() * 100);
+            infectionRateIncreases.put(currentData.cityName(), infectionRateIncrease);
         }
         return infectionRateIncreases;
     }

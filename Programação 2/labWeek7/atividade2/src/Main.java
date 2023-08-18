@@ -10,7 +10,7 @@ public class Main {
             Menu menu = new Menu(filePath);
             menu.start();
         } else {
-            JOptionPane.showMessageDialog(null,"No file path provided!");
+            JOptionPane.showMessageDialog(null,"No file path provided!", "Warning", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }

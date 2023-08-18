@@ -1,9 +1,11 @@
 package handlers;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +13,11 @@ import java.util.Map;
 
 public class Menu {
 
+    private final String filePath;
     private List<CovidData> covidDataList;
     private Map<String, Double> infectionRateIncreases;
     private Map<String, Double> mortalityRates;
-    private final String filePath;
+    DecimalFormat decimalFormat = new DecimalFormat("#.##");
 
     public Menu(String filePath) {
         this.filePath = filePath;
@@ -29,13 +32,13 @@ public class Menu {
         String menu = """
                 ------- MENU --------
                 1- Show statistics
-                2- Show most impacted neighborhoods
+                2- Show most impacted neighborhood
                 3- Add new record
                 4- Save data to file
                 5- Exit""";
 
         while (userChoice != 5) {
-            String optionChosen = JOptionPane.showInputDialog(null, menu + "\nChoose a option:");
+            String optionChosen = JOptionPane.showInputDialog(null, menu + "\nChoose a option:","Welcome!", JOptionPane.INFORMATION_MESSAGE);
 
             try {
                 userChoice = Integer.parseInt(optionChosen);
@@ -48,7 +51,7 @@ public class Menu {
                     default -> JOptionPane.showMessageDialog(null, "Shutting down. Have a nice day! :)");
                 }
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Invalid option. Please choose again.");
+                JOptionPane.showMessageDialog(null, "Invalid option. Please choose again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -66,18 +69,24 @@ public class Menu {
 
     private void showStatistics() {
         StringBuilder statistics = new StringBuilder();
+
         for (CovidData data : covidDataList) {
-            String district = data.getCityName();
+            String district = data.cityName();
             double infectionRateIncrease = infectionRateIncreases.getOrDefault(district, 0.0);
             double mortalityRate = mortalityRates.getOrDefault(district, 0.0);
 
             statistics.append("District: ").append(district).append("\n");
-            statistics.append("Infection Rate Increase: ").append(infectionRateIncrease).append("\n");
-            statistics.append("Mortality Rate: ").append(mortalityRate).append("\n");
+            statistics.append("Infection Rate Increase: ").append(decimalFormat.format(infectionRateIncrease)).append("%").append("\n");
+            statistics.append("Mortality Rate: ").append(decimalFormat.format(mortalityRate)).append("%").append("\n");
             statistics.append("------------------------\n");
         }
+        //Create a scrollabe menu that will display the statistics
+        JTextArea textArea = new JTextArea(statistics.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(400, 300));
 
-        JOptionPane.showMessageDialog(null, statistics.toString(), "Statistics", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, scrollPane, "Statistics", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void showMostImpactedNeighborhoods() {
@@ -85,10 +94,15 @@ public class Menu {
 
         StringBuilder impactedNeighborhoods = new StringBuilder();
         for (String neighborhood : mostImpactedNeighborhoods) {
-            impactedNeighborhoods.append(neighborhood).append("\n");
+            impactedNeighborhoods.append("District: ").append(neighborhood).append("\n");
         }
 
-        JOptionPane.showMessageDialog(null, "The most impacted neighborhood is: " + impactedNeighborhoods, "Most Impacted Neighborhoods", JOptionPane.INFORMATION_MESSAGE);
+        JTextArea textArea = new JTextArea(impactedNeighborhoods.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(200, 100));
+
+        JOptionPane.showMessageDialog(null, scrollPane, "Most impacted neighborhoods", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void addNewRecord() {
@@ -104,13 +118,13 @@ public class Menu {
         infectionRateIncreases = CalculateInfectionRate.calculateInfectionRate(covidDataList);
         mortalityRates = CalculateMortalityRate.calculateMortalityRate(covidDataList);
 
-        JOptionPane.showMessageDialog(null, "New record added successfully.");
+        JOptionPane.showMessageDialog(null, "New record added successfully.", "Success!",JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void saveCovidDataToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (CovidData data : covidDataList) {
-                writer.write(data.getCityName() + "," + data.getCovidCases() + "," + data.getCovidDeaths() + "," + data.getTimeOfSurvey());
+                writer.write(data.cityName() + "," + data.covidCases() + "," + data.covidDeaths() + "," + data.timeOfSurvey());
                 writer.newLine();
             }
             JOptionPane.showMessageDialog(null, "Data successfully saved to file!");
