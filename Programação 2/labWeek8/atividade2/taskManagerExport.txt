@@ -1,5 +1,2 @@
-teste, none, ONGOING
-sav, 12-09-2023, ONGOING
 lab week 8-prog2-, none, FINISHED
 lab week8-os2-, none, FINISHED
-adicionar metodo remoção labweek8 -prog2-, none, ONGOING

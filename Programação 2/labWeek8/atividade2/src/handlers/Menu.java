@@ -12,9 +12,10 @@ public class Menu {
                 2. Lookup tasks by STATUS
                 3. Lookup task by NAME
                 4. Add a new task
-                5. Exit""";
+                5. DELETE tasks by STATUS or NAME
+                6. Exit""";
 
-        while (userChoice != 5) {
+        while (userChoice != 6) {
             String optionChosen = JOptionPane.showInputDialog(null, menu + "\nChoose a option: ");
 
             try {
@@ -24,7 +25,8 @@ public class Menu {
                     case 2 -> rtm.lookupTaskByStatus();
                     case 3 -> rtm.lookupTaskByName();
                     case 4 -> rtm.addTaskToFile();
-                    case 5 -> JOptionPane.showMessageDialog(null, "Shutting down. Have a nice day!");
+                    case 5 -> rtm.deleteTasks();
+                    case 6 -> JOptionPane.showMessageDialog(null, "Shutting down. Have a nice day!");
                 }
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Invalid Option. Double check your parameters!", "Error", JOptionPane.ERROR_MESSAGE);

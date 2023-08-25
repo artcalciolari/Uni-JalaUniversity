@@ -11,4 +11,6 @@ abstract interface RepositorioTarefa {
     abstract void lookupTaskByName();
 
     abstract void showAllTasks();
+
+    abstract void deleteTasks();
 }

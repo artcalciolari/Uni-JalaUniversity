@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 class RepositorioTarefaMemoria implements RepositorioTarefa {
 
-    ScrollPaneWithTextArea sp = new ScrollPaneWithTextArea();
     private final List<Tarefa> fileTaskList;
     private final String FILE_NAME = "taskManagerExport.txt";
+    ScrollPaneWithTextArea sp = new ScrollPaneWithTextArea();
 
     protected RepositorioTarefaMemoria() {
         fileTaskList = new ArrayList<>();
@@ -33,16 +33,7 @@ class RepositorioTarefaMemoria implements RepositorioTarefa {
         Tarefa taskToAdd = new Tarefa(taskNameToAdd, taskDueDateToAdd, taskStatusToAdd);
         fileTaskList.add(taskToAdd);
 
-        try (FileWriter writer = new FileWriter(FILE_NAME)) {
-            for (Tarefa tarefa : fileTaskList) {
-                String name = tarefa.getTaskName();
-                String dueDate = tarefa.getTaskDueDate();
-                String status = tarefa.getTaskStatus();
-                writer.write(name + ", " + dueDate + ", " + status + "\n");
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error occurred while writing to file. " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        writeToFile();
     }
 
     @Override
@@ -79,7 +70,7 @@ class RepositorioTarefaMemoria implements RepositorioTarefa {
         List<String> showTasks = new ArrayList<>();
 
         for (Tarefa tarefa : fileTaskList) {
-            showTasks.add(tarefa.getTaskName() + " / " + tarefa.getTaskDueDate() + " / " + tarefa.getTaskStatus());
+            showTasks.add(tarefa.getTaskName() + "\nDue Date: " + tarefa.getTaskDueDate() + "\nStatus: " + tarefa.getTaskStatus());
         }
 
         String showAllList = CreateTaskList.createTaskListString(showTasks);
@@ -96,10 +87,10 @@ class RepositorioTarefaMemoria implements RepositorioTarefa {
 
         for (Tarefa tarefa : fileTaskList) {
             if (tarefa.getTaskStatus().equals(userKey)) {
-                tasksFetchedFromStatus.add(tarefa.getTaskName() + " / " + tarefa.getTaskDueDate() + " / " + tarefa.getTaskStatus());
+                tasksFetchedFromStatus.add(tarefa.getTaskName() + "\nDue Date: " + tarefa.getTaskDueDate() + "\nStatus: " + tarefa.getTaskStatus());
             }
         }
-        
+
         String statusList = CreateTaskList.createTaskListString(tasksFetchedFromStatus);
 
         JScrollPane scrollPane = sp.createScrollPaneWithTextArea(statusList);
@@ -114,7 +105,7 @@ class RepositorioTarefaMemoria implements RepositorioTarefa {
 
         for (Tarefa tarefa : fileTaskList) {
             if (tarefa.getTaskName().equals(userKey)) {
-                tasksFetchedFromName.add(tarefa.getTaskName() + " / " + tarefa.getTaskDueDate() + " / " + tarefa.getTaskStatus());
+                tasksFetchedFromName.add(tarefa.getTaskName() + "\nDue Date: " + tarefa.getTaskDueDate() + "\nStatus: " + tarefa.getTaskStatus());
             }
         }
 
@@ -123,5 +114,51 @@ class RepositorioTarefaMemoria implements RepositorioTarefa {
         JScrollPane scrollPane = sp.createScrollPaneWithTextArea(nameList);
 
         JOptionPane.showMessageDialog(null, scrollPane, "Task found!", JOptionPane.INFORMATION_MESSAGE);
+
     }
+
+    @Override
+    public void deleteTasks() {
+        String userChoice = JOptionPane.showInputDialog("Do you want to delete based on name or status?").toLowerCase();
+
+        List<Tarefa> tasksToDelete = new ArrayList<>();
+        String userKey = "";
+
+        if (userChoice.equals("name")) {
+            userKey = JOptionPane.showInputDialog("Insert task name:").toLowerCase();
+        } else if (userChoice.equals("status")) {
+            userKey = JOptionPane.showInputDialog("Insert task status:\n[FINISHED/ONGOING]").toUpperCase();
+        }
+
+        for (Tarefa tarefa : fileTaskList) {
+            if (tarefa.getTaskName().equals(userKey) || tarefa.getTaskStatus().equals(userKey)) {
+                tasksToDelete.add(tarefa);
+            }
+        }
+
+        if (tasksToDelete.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No tasks found with the given name or status.", "Task Not Found", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        fileTaskList.removeAll(tasksToDelete);
+
+        writeToFile();
+
+        JOptionPane.showMessageDialog(null, "Tasks deleted successfully.", "Tasks Deleted", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void writeToFile() {
+        try (FileWriter writer = new FileWriter(FILE_NAME)) {
+            for (Tarefa tarefa : fileTaskList) {
+                String name = tarefa.getTaskName();
+                String dueDate = tarefa.getTaskDueDate();
+                String status = tarefa.getTaskStatus();
+                writer.write(name + ", " + dueDate + ", " + status + "\n");
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error occurred while writing to file. " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }
