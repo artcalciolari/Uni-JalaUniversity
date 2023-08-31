@@ -1,16 +1,15 @@
-package Algorithms;
+package algorithms;
 
-import Utils.ArrayPrinter;
+import graphicalInterface.GUI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BubbleSort implements SortingArrays {
-    List<Object[]> steps = new ArrayList<>();
-    ArrayPrinter arrayPrinter = new ArrayPrinter();
+    final List<Object[]> steps = new ArrayList<>();
 
     @Override
-    public void sort(Object[] arr, int arrayLength) throws InterruptedException {
+    public void sort(Object[] arr, int arrayLength) {
         int i, j;
         boolean swapped;
         for (i = 0; i < arrayLength - 1; i++) {
@@ -27,18 +26,29 @@ public class BubbleSort implements SortingArrays {
                 break;
             }
         }
-        arrayPrinter.printArray(steps);
+
+        GUI visualizer = new GUI();
+        visualizer.setVisible(true);
+        visualizer.displayList(steps);
     }
 
     @Override
     public void descendingOrder(Object[] arr) {
-        int start = 0;
-        int end = arr.length - 1;
-        while (start < end) {
-            swap(arr, start, end);
-            start++;
-            end--;
+        List<Object[]> stepsDescending = new ArrayList<>();
+
+        int size = arr.length;
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - i - 1; j++) {
+                if (compare(arr[j], arr[j + 1]) < 0) {
+                    swap(arr, j, j + 1);
+                }
+            }
+            stepsDescending.add(arr.clone());
         }
+
+        GUI visualizer = new GUI();
+        visualizer.setVisible(true);
+        visualizer.displayList(stepsDescending);
     }
 
     private int compare(Object obj1, Object obj2) {

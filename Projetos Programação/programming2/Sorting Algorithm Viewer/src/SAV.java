@@ -1,11 +1,18 @@
-import HandlerClasses.Settings;
-import HandlerClasses.SettingsHandler;
+import handlerClasses.SettingsHandler;
+import utils.GlobalCounter;
+import utils.Settings;
+import utils.TimerUtils;
 
+import javax.swing.*;
 import java.text.DecimalFormat;
 
 public class SAV {
     public static void main(String[] args) {
+
         long startTime = System.currentTimeMillis();
+
+        TimerUtils timer = new TimerUtils();
+        timer.startTimer();
 
         //substrings used to cut the initial part of the argument
         String algChoice = args[0].substring(2).toLowerCase();
@@ -17,15 +24,15 @@ public class SAV {
 
         int finalDelay = Integer.parseInt(delay);
 
-        Settings settings = new Settings(algChoice, listType, sortOrder, inputMethod, inputString, finalDelay); //initiating the object that controls all of the atributes
-
-        SettingsHandler settingsHandler = new SettingsHandler(settings); //initiating our class that validates everything
+        new Settings(algChoice, listType, sortOrder, inputMethod, inputString, finalDelay);
+        SettingsHandler settingsHandler = new SettingsHandler();//initiating our class that validates everything
         settingsHandler.validateArguments();
 
         long endTime = System.currentTimeMillis();
-        double elapsedTime = (double) (endTime - startTime) / 1000; // Calculating time in ms
+        double totalDelayTimerUser = GlobalCounter.getCounter() * Settings.getDelay();
+        double elapsedTime = (endTime - startTime - totalDelayTimerUser) / 1000; // Calculating time in ms
 
-        DecimalFormat decimalFormat = new DecimalFormat("0.000");
-        System.out.println("\nTotal time spent: " + decimalFormat.format(elapsedTime));
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        JOptionPane.showMessageDialog(null, "Without taking into account the time between delays,\nthe computational time was: " + decimalFormat.format(elapsedTime) + " seconds.", "Program Finished", JOptionPane.INFORMATION_MESSAGE);
     }
 }

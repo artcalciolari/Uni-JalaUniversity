@@ -1,16 +1,15 @@
-package Algorithms;
+package algorithms;
 
-import Utils.ArrayPrinter;
+import graphicalInterface.GUI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class InsertionSort implements SortingArrays {
-    List<Object[]> steps = new ArrayList<>();
-    ArrayPrinter arrayPrinter = new ArrayPrinter();
+    final List<Object[]> steps = new ArrayList<>();
 
     @Override
-    public void sort(Object[] arr, int arrayLength) throws InterruptedException {
+    public void sort(Object[] arr, int arrayLength) {
         for (int i = 1; i < arrayLength; i++) {
             Object key = arr[i];
             int j = i - 1;
@@ -24,21 +23,30 @@ public class InsertionSort implements SortingArrays {
             steps.add(arr.clone());
         }
 
-        arrayPrinter.printArray(steps);
+        GUI visualizer = new GUI();
+        visualizer.setVisible(true);
+        visualizer.displayList(steps);
     }
 
     @Override
     public void descendingOrder(Object[] arr) {
-        for (int i = 1; i < arr.length; i++) {
-            Object key = arr[i];
-            int j = i - 1;
-
+        List<Object[]> stepsDescending = new ArrayList<>();
+        int size = arr.length;
+        for (int step = 1; step < size; step++) {
+            Object key = arr[step];
+            int j = step - 1;
             while (j >= 0 && compare(arr[j], key) < 0) {
                 arr[j + 1] = arr[j];
-                j = j - 1;
+                j--;
             }
             arr[j + 1] = key;
+
+            stepsDescending.add(arr.clone());
         }
+
+        GUI visualizer = new GUI();
+        visualizer.setVisible(true);
+        visualizer.displayList(stepsDescending);
     }
 
     private int compare(Object obj1, Object obj2) {

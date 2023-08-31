@@ -1,23 +1,27 @@
-package Algorithms;
+package algorithms;
 
-import Utils.ArrayPrinter;
+import graphicalInterface.GUI;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MergeSort implements SortingArrays {
-    List<Object[]> steps = new ArrayList<>();
-    ArrayPrinter arrayPrinter = new ArrayPrinter();
+    final List<Object[]> steps = new ArrayList<>();
 
     @Override
-    public void sort(Object[] arr, int arrayLength) throws InterruptedException {
+    public void sort(Object[] arr, int arrayLength) {
         mergeSort(arr, 0, arrayLength - 1);
-        arrayPrinter.printArray(steps);
+        GUI visualizer = new GUI();
+        visualizer.setVisible(true);
+        visualizer.displayList(steps);
     }
 
     @Override
     public void descendingOrder(Object[] arr) {
         mergeSortDescending(arr, 0, arr.length - 1);
+        GUI visualizer = new GUI();
+        visualizer.setVisible(true);
+        visualizer.displayList(steps);
     }
 
     private void mergeSort(Object[] arr, int left, int right) {
@@ -77,6 +81,8 @@ public class MergeSort implements SortingArrays {
             mergeSortDescending(arr, mid + 1, right);
 
             mergeDescending(arr, left, mid, right);
+
+            steps.add(arr.clone());
         }
     }
 

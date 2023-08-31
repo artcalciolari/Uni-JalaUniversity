@@ -1,7 +1,7 @@
-package Algorithms;
+package algorithms;
 
 public interface SortingArrays {
-    void sort(Object[] arr, int n) throws InterruptedException;
+    void sort(Object[] arr, int n);
 
     void descendingOrder(Object[] arr);
 }

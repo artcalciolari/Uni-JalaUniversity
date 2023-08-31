@@ -1,9 +1,12 @@
-package HandlerClasses;
+package handlerClasses;
 
-import Algorithms.BubbleSort;
-import Algorithms.InsertionSort;
-import Algorithms.MergeSort;
+import algorithms.BubbleSort;
+import algorithms.InsertionSort;
+import algorithms.MergeSort;
+import utils.RandomArrayGenerator;
+import utils.Settings;
 
+import javax.swing.*;
 import java.util.Objects;
 
 public class SettingsHandler {
@@ -16,14 +19,11 @@ public class SettingsHandler {
     private final String sortOrder = Settings.getSortOrder();
     private Object[] array;
 
-    public SettingsHandler(Settings settings) {
-    }
-
     public void validateInputMethod(String inputMethod, String listType) {
 
         if (Objects.equals(inputMethod, "r")) {
             int input = Integer.parseInt(inputString);
-            array =  RandomArrayGenerator.generateRandomArray(input, listType);
+            array = RandomArrayGenerator.generateRandomArray(input, listType);
         } else {
             String[] tempArray = inputString.split(",");
             Object[] finalArray = new Object[tempArray.length];
@@ -47,40 +47,43 @@ public class SettingsHandler {
 
         try {
             switch (algorithmChosen) {
+
                 case "b" -> {
                     BubbleSort bubbleSort = new BubbleSort();
-                    if (Objects.equals(sortOrder,"az")) {
-                        System.out.println("Java will use Bubble Sort and organize in a ascending form.\nThe input method chosen was: "+inputMethod);
+                    if (Objects.equals(sortOrder, "az")) {
+                        JOptionPane.showMessageDialog(null, "Java will use Bubble Sort and organize in ascending form.\nThe input method chosen was: " + inputMethod, "Program Starting", JOptionPane.INFORMATION_MESSAGE);
                         Thread.sleep(1500);
                         bubbleSort.sort(array, n);
                     } else {
-                        System.out.println("Java will use Bubble Sort and organize in a descending form.\nThe input method chosen was: "+inputMethod);
-                        // ...
+                        JOptionPane.showMessageDialog(null, "Java will use Bubble Sort and organize in ascending form.\nThe input method chosen was: " + inputMethod, "Program Starting", JOptionPane.INFORMATION_MESSAGE);
+                        Thread.sleep(1500);
+                        bubbleSort.descendingOrder(array);
                     }
-
                 }
 
                 case "i" -> {
                     InsertionSort insertionSort = new InsertionSort();
-                    if (Objects.equals(sortOrder,"az")) {
-                        System.out.println("Java will use Insertion Sort and organize in a ascending form.\nThe input method chosen was: "+inputMethod);
+                    if (Objects.equals(sortOrder, "az")) {
+                        JOptionPane.showMessageDialog(null, "Java will use Insertion Sort and organize in ascending form.\nThe input method chosen was: " + inputMethod, "Program Starting", JOptionPane.INFORMATION_MESSAGE);
                         Thread.sleep(1500);
                         insertionSort.sort(array, n);
                     } else {
-                        System.out.println("Java will use Insertion Sort and organize in a descending form.\nThe input method chosen was: "+inputMethod);
-                        // ...
+                        JOptionPane.showMessageDialog(null, "Java will use Insertion Sort and organize in ascending form.\nThe input method chosen was: " + inputMethod, "Program Starting", JOptionPane.INFORMATION_MESSAGE);
+                        Thread.sleep(1500);
+                        insertionSort.descendingOrder(array);
                     }
                 }
 
                 case "m" -> {
                     MergeSort mergeSort = new MergeSort();
-                    if (Objects.equals(sortOrder,"az")) {
-                        System.out.println("Java will use Merge Sort and organize in a ascending form.\nThe input method chosen was: "+inputMethod);
+                    if (Objects.equals(sortOrder, "az")) {
+                        JOptionPane.showMessageDialog(null, "Java will use Merge Sort and organize in ascending form.\nThe input method chosen was: " + inputMethod, "Program Starting", JOptionPane.INFORMATION_MESSAGE);
                         Thread.sleep(1500);
                         mergeSort.sort(array, n);
                     } else {
-                        System.out.println("Java will use Merge Sort and organize in a descending form.\nThe input method chosen was: "+inputMethod);
-                        // ...
+                        JOptionPane.showMessageDialog(null, "Java will use Merge Sort and organize in ascending form.\nThe input method chosen was: " + inputMethod, "Program Starting", JOptionPane.INFORMATION_MESSAGE);
+                        Thread.sleep(1500);
+                        mergeSort.descendingOrder(array);
                     }
                 }
             }
