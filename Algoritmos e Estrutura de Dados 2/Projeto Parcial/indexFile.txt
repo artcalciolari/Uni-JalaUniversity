@@ -1,0 +1,8 @@
+Miguel Prazeres: 5-10
+binary search: 25
+bst: 31-33, 35-40
+chatGPT: 10-20, 25
+divide and conquer: 40, 45-47
+dynamic programming: 45-50
+graph: 60-65
+nodes: 31-33, 60-65

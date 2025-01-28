@@ -1,0 +1,8 @@
+arrays: 10-12, 20
+binary search: 25, 30
+binary search tree: 30-33
+chatGPT: 10-20, 25
+divide and conquer: 40, 45-47
+dynamic programming: 45-50
+graph: 60-65
+nodes: 30-33, 60-65
