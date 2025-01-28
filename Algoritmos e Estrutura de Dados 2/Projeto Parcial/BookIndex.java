@@ -10,7 +10,6 @@ public class BookIndex {
         index = new HashMap<>();
     }
 
-    // Exemplo de uso no main:
     public static void main(String[] args) {
         BookIndex bookIndex = new BookIndex();
         String fileName = "indexFile.txt"; // Nome do arquivo de índice
