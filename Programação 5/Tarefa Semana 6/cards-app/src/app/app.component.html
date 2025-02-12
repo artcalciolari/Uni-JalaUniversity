@@ -1,0 +1,46 @@
+<div class="container">
+  <h1>Card App</h1>
+
+  <!-- Creation/Update form -->
+  <form (ngSubmit)="onSubmit()">
+    <input
+      type="text"
+      placeholder="Title"
+      [(ngModel)]="cardForm.title"
+      name="title"
+      required
+    />
+    <textarea
+      placeholder="Content"
+      [(ngModel)]="cardForm.content"
+      name="content"
+      required
+    ></textarea>
+    <button type="submit">{{ editing ? "Update" : "Add" }} Card</button>
+  </form>
+
+  <!-- Filter by state -->
+   <h2>Filter Cards</h2>
+   <select [(ngModel)]="selectedFilter" name="filterState">
+      <option value="">All</option>
+      <option value="New">New</option>
+      <option value="Pending">Pending</option>
+      <option value="Done">Done</option>
+      <option value="Blocked">Blocked</option>
+   </select>
+
+  <!-- List of filtered cards -->
+  <h2>Cards in Local Memory</h2>
+  <div class="cards">
+    <app-card
+      *ngFor="let card of filteredCards"
+      [title]="card.title"
+      [state]="card.state"
+      (select)="onSelectCard(card, 'memory')"
+      (remove)="onRemoveCard(card, 'memory')"
+      (changeState)="onChangeCardState(card)"
+    >
+      <p>{{ card.content }}</p>
+    </app-card>
+  </div>
+</div>
