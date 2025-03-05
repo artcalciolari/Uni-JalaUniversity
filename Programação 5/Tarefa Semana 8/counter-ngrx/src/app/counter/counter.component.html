@@ -1,0 +1,18 @@
+<div class="counter-container">
+  <h2>Contador NgRx</h2>
+
+  <div class="counter-display">
+    <span>Valor Atual: {{ count$ | async }}</span>
+  </div>
+
+  <div class="counter-controls">
+    <button (click)="increment()">Incrementar</button>
+    <button (click)="decrement()">Decrementar</button>
+    <button (click)="reset()">Resetar</button>
+  </div>
+
+  <div class="counter-input">
+    <input type="number" [(ngModel)]="inputValue" placeholder="Definir valor" />
+    <button (click)="setValue()">Definir</button>
+  </div>
+</div>
