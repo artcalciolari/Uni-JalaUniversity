@@ -19,8 +19,7 @@ def generate_embeddings():
     if not os.path.exists(PROCESSED_DOCS_FOLDER):
         print("❌ A pasta de documentos processados não foi encontrada.")
         return
-
-    print("🧠 Gerando embeddings para os documentos...")
+    
     for filename in os.listdir(PROCESSED_DOCS_FOLDER):
         file_path = os.path.join(PROCESSED_DOCS_FOLDER, filename)
         with open(file_path, "r", encoding="utf-8") as f:

@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
-from sklearn.metrics import silhouette_score
 from scipy.spatial import ConvexHull
 import umap
 
@@ -241,7 +240,7 @@ def plot_grouped_embeddings(doc_names, doc_embeddings, reduction_method, n_clust
     # Remover eixos para uma visualização mais limpa
     plt.axis('off')
     
-    # plt.tight_layout()
+    plt.tight_layout()
     
     return fig
 

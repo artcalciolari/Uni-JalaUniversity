@@ -3,6 +3,9 @@ import sys
 import time
 import re
 import streamlit as st
+from PIL import Image
+
+image = Image.open("data/header.png")
 
 # Configurar a página com título e ícone
 st.set_page_config(
@@ -14,7 +17,7 @@ st.set_page_config(
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 # Mostra tela de carregamento antes de importar módulos pesados
-with st.spinner("🔄 Carregando componentes do sistema..."):
+with st.spinner("Carregando componentes do sistema..."):
     from src.search.semantic_search import search, load_embeddings
     from src.visualization.cluster_viz import plot_clean_embeddings, plot_grouped_embeddings
 
@@ -111,6 +114,8 @@ def display_document_content(doc_name):
                         f'<span style="background-color: {theme["highlight"]};">{term}</span>'
                     )
                     st.markdown(f'<div class="document-card">{highlighted_content}</div>', unsafe_allow_html=True)
+        else:
+            st.markdown(f'<div class="document-card">{content}</div>', unsafe_allow_html=True)
 
 
 def run_dashboard():
@@ -124,9 +129,13 @@ def run_dashboard():
     if 'doc_options' not in st.session_state:
         st.session_state.doc_options = {}
     if 'highlight' not in st.session_state:
-        st.session_state.highlight = True
+        st.session_state.highlight = False
     if 'current_doc' not in st.session_state:
         st.session_state.current_doc = None
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image(image, caption="Jala Header", use_container_width=True)
     
     st.title("📚 Dashboard de Busca de Documentação Técnica")
 
@@ -134,98 +143,106 @@ def run_dashboard():
     with st.spinner("🧠 Carregando embeddings... Isso pode levar alguns segundos."):
         doc_names, doc_embeddings = load_embeddings()
     
-    # Corrigindo a verificação que causa o erro
+
     if doc_names is None or doc_embeddings is None:
         st.error("⚠ Erro ao carregar embeddings. Execute `generate_embeddings.py` primeiro.")
         return
     else:
         st.success(f"✅ {len(doc_names)} documentos carregados com sucesso!")
 
-    # Busca Semântica
-    st.subheader("🔍 Busca Semântica")
-    
-    # Função para atualizar a busca
-    def update_search():
-        st.session_state.results = search(st.session_state.query, doc_names, doc_embeddings)
-        if st.session_state.results:
-            st.session_state.doc_options = {
-                f"{doc} (Similaridade: {score:.4f})": doc 
-                for doc, score in st.session_state.results
-            }
+    tab1, tab2 = st.tabs(["🔍 Busca Semântica", "📊 Visualização dos Clusters"])
 
-    # Campo de busca com valor persistente
-    query = st.text_input(
-        "Digite sua busca:", 
-        value=st.session_state.query,
-        key="query_input"
-    )
+    with tab1:
+        # Busca Semântica        
 
-    # Checkbox para destacar termos
-    highlight = st.checkbox("Destacar termos da busca", value=st.session_state.highlight, key="highlight_terms_search")
-    st.session_state.highlight = highlight
-    
-    # Atualizar a variável de estado
-    st.session_state.query = query
-    
-    if st.button("Buscar", key="search_btn"):
-        if st.session_state.query:
-            update_search()
-        else:
-            st.warning("⚠ Por favor, digite uma consulta válida.")
-    
-    # Mostrar resultados se existirem
-    if st.session_state.results:
-        st.write("**📌 Resultados mais relevantes:**")
-        
-        # Exibir os documentos em um menu dropdown
-        selected_doc = st.selectbox(
-            "Selecione um documento para visualizar:", 
-            list(st.session_state.doc_options.keys()),
-            key="doc_selector"
+        # Função para atualizar a busca
+        def update_search():
+            st.session_state.results = search(st.session_state.query, doc_names, doc_embeddings)
+            if st.session_state.results:
+                st.session_state.doc_options = {
+                    f"{doc} (Similaridade: {score:.4f})": doc 
+                    for doc, score in st.session_state.results
+                }
+
+        # Campo de busca com valor persistente
+        query = st.text_input(
+            "Digite sua busca:", 
+            value=st.session_state.query,
+            key="query_input"
         )
-        
-        # Exibir o conteúdo do documento selecionado
-        if selected_doc:
-            st.session_state.current_doc = st.session_state.doc_options[selected_doc]
-            display_document_content(st.session_state.current_doc)
-    elif st.session_state.query and st.session_state.results == []:
-        st.warning("⚠ Nenhum documento relevante encontrado.")
 
-    # Visualização dos Clusters
-    st.subheader("📊 Visualização dos Clusters")
-    
-    # Adiciona opção de escolher entre visualização simples e visualização por clusters
-    visualization_type = st.radio("Escolha o tipo de visualização:", 
-                                ["Visualização Simples", "Visualização por Clusters"],
-                                horizontal=True,
-                                key="viz_type")
-    
-    st.write("Escolha o método de redução de dimensionalidade:")
-    reduction_method = st.selectbox("", ["- Selecione -", "tsne", "umap", "pca"], key="reduction_method")
-    
-    # Adicionar campo para número de clusters quando a visualização por clusters for selecionada
-    n_clusters = None
-    if visualization_type == "Visualização por Clusters":
-        n_clusters = st.slider("Número de clusters", min_value=2, max_value=15, value=6, key="n_clusters")
-    
-    btn_gerar = st.button("Gerar Visualização", key="generate_viz")
-    
-    if btn_gerar:
-        if reduction_method == "- Selecione -":
-            st.warning("⚠ Por favor, selecione um método de redução de dimensionalidade.")
-        else:
-            with st.spinner(f"Gerando visualização usando {reduction_method.upper()}... (pode levar alguns segundos)"):
-                if visualization_type == "Visualização Simples":
-                    fig = plot_clean_embeddings(doc_embeddings, reduction_method)
-                else:  # Visualização por Clusters
-                    fig = plot_grouped_embeddings(doc_names, doc_embeddings, reduction_method, n_clusters)
-                    
-                if fig:
-                    st.success("✅ Visualização gerada com sucesso!")
-                    time.sleep(1)
-                    st.pyplot(fig)
-                else:
-                    st.error("❌ Não foi possível gerar a visualização.")
+        # Atualizar a variável de estado
+        st.session_state.query = query
+        
+        if st.button("Buscar", key="search_btn"):
+            if st.session_state.query:
+                update_search()
+            else:
+                st.warning("⚠ Por favor, digite uma consulta válida.")
+        
+        # Mostrar resultados se existirem
+        if st.session_state.results:
+            st.write("**📌 Resultados mais relevantes:**")
+            
+            # Exibir os documentos em um menu dropdown
+            selected_doc = st.selectbox(
+                "Selecione um documento para visualizar:", 
+                list(st.session_state.doc_options.keys()),
+                key="doc_selector"
+            )
+            
+            # Exibir o conteúdo do documento selecionado
+            if selected_doc:
+                st.session_state.current_doc = st.session_state.doc_options[selected_doc]
+                display_document_content(st.session_state.current_doc)
+        elif st.session_state.query and st.session_state.results == []:
+            st.warning("⚠ Nenhum documento relevante encontrado.")
+
+        # Limpa o conteúdo do documento (basicamente ctrl + l do terminal)
+        if st.session_state.current_doc:
+            if st.button("Limpar Conteúdo", key="clear_page_btn"):
+                st.session_state.current_doc = None
+                st.session_state.query = ""
+                st.session_state.results = None
+                st.session_state.doc_options = {}
+                st.session_state.highlight = False
+                st.rerun()
+    with tab2:
+        # Visualização dos Clusters
+        st.subheader("📊 Visualização dos Clusters")
+        
+        # Adiciona opção de escolher entre visualização simples e visualização por clusters
+        visualization_type = st.radio("Escolha o tipo de visualização:", 
+                                    ["Visualização Simples", "Visualização por Clusters"],
+                                    horizontal=True,
+                                    key="viz_type")
+        
+        st.write("Escolha o método de redução de dimensionalidade:")
+        reduction_method = st.selectbox("", ["- Selecione -", "tsne", "umap", "pca"], key="reduction_method")
+        
+        # Adicionar campo para número de clusters quando a visualização por clusters for selecionada
+        n_clusters = None
+        if visualization_type == "Visualização por Clusters":
+            n_clusters = st.slider("Número de clusters", min_value=2, max_value=15, value=6, key="n_clusters")
+        
+        btn_gerar = st.button("Gerar Visualização", key="generate_viz")
+        
+        if btn_gerar:
+            if reduction_method == "- Selecione -":
+                st.warning("⚠ Por favor, selecione um método de redução de dimensionalidade.")
+            else:
+                with st.spinner(f"Gerando visualização usando {reduction_method.upper()}... (pode levar alguns segundos)"):
+                    if visualization_type == "Visualização Simples":
+                        fig = plot_clean_embeddings(doc_embeddings, reduction_method)
+                    else:  # Visualização por Clusters
+                        fig = plot_grouped_embeddings(doc_names, doc_embeddings, reduction_method, n_clusters)
+                        
+                    if fig:
+                        st.success("✅ Visualização gerada com sucesso!")
+                        time.sleep(1)
+                        st.pyplot(fig)
+                    else:
+                        st.error("❌ Não foi possível gerar a visualização.")
 
 
 if __name__ == "__main__":
