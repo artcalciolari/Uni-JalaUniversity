@@ -145,3 +145,7 @@ A solução desenvolvida atende a todos os requisitos. Um modelo de Regressão L
 ### Resposta do endpoint /predict
 
 ![alt text](/imgs/image1.png)
+
+## 6. Repositório do GitHub
+
+Você pode acessar este projeto neste [link](https://github.com/artcalciolari/Uni-JalaUniversity/tree/main/Data%20Science/Laborat%C3%B3rio%20Semana%207).
