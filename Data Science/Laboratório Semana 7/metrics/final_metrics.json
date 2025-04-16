@@ -1,0 +1,16 @@
+{
+    "model_name": "Logistic Regression",
+    "accuracy": 0.9824561403508771,
+    "inference_time_ms": 0.1674589999311138,
+    "class_report": "              precision    recall  f1-score   support\n\n   malignant       0.98      0.98      0.98        42\n      benign       0.99      0.99      0.99        72\n\n    accuracy                           0.98       114\n   macro avg       0.98      0.98      0.98       114\nweighted avg       0.98      0.98      0.98       114\n",
+    "confusion_matrix": [
+        [
+            41,
+            1
+        ],
+        [
+            1,
+            71
+        ]
+    ]
+}
