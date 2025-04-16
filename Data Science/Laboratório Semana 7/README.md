@@ -140,11 +140,11 @@ A solução desenvolvida atende a todos os requisitos. Um modelo de Regressão L
 
 ### API em funcionamento (com swagger)
 
-![alt text](/imgs/image.png)
+![alt text](./imgs/image.png)
 
 ### Resposta do endpoint /predict
 
-![alt text](/imgs/image1.png)
+![alt text](./imgs/image1.png)
 
 ## 6. Repositório do GitHub
 
