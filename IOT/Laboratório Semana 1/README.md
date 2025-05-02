@@ -1,175 +1,171 @@
-# Simulador IOT com Python
+# Simulador de Controle de Acesso IoT com Python e MQTT
 
-## Pré-Requisitos
+Este projeto simula um sistema de controle de acesso simples usando Python e o protocolo MQTT para comunicação entre diferentes componentes (sensores, atuador de porta, serviços de autorização e permanência).
 
-- Python: versão 3.x
-- Biblioteca Paho-MQTT
-  - pip install paho-mqtt
+## 1. Pré-Requisitos
 
-## Broker MQTT
+- Python: versão 3.8 ou superior
+- Biblioteca Paho-MQTT:
 
-O broker MQTT atua como o intermediário central, responsável por receber mensagens dos publicadores e distribuí-las aos assinantes corretos com base nos tópicos.
-Neste projeto decidimos utilizar um broker público hospedado na nuvem, o HiveMQ.
+  ```bash
+  pip install paho-mqtt python-dotenv
+  ```
 
-- Vantagens: Configuração rápida (apenas requer o endereço do broker), útil para testar conectividade real pela internet.
-- Desvantagens: Pode introduzir latência, levanta preocupações de privacidade (os dados trafegam pela internet pública), pode ter limites de uso ou instabilidade.
+- Arquivo `.env`: Crie um arquivo chamado `.env` na raiz do projeto com as seguintes variáveis (substitua pelos seus valores):
 
-## Definindo o Namespace de Tópicos MQTT
+  ```dotenv
+  MQTT_BROKER_ADDRESS=seu_broker_address
+  MQTT_BROKER_PORT=8883 # ou a porta correta (geralmente 8883 para TLS)
+  MQTT_USERNAME=seu_username
+  MQTT_PASSWORD=sua_password
+  ```
 
-Uma estrutura de tópicos bem definida é crucial para a organização e o roteamento eficiente das mensagens no sistema MQTT. Uma hierarquia lógica facilita a filtragem de mensagens e a compreensão do fluxo de dados.
-Com base nos requisitos da simulação, a seguinte estrutura de tópicos é proposta:
+## 2. Broker MQTT
 
-| Tópico                         | Propósito/Descrição                                    | Publicador Típico      | Assinante(s) Típico(s)                         | Exemplo de Formato de Mensagem (JSON)                                                      |
-| ------------------------------ | ------------------------------------------------------ | ---------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `acesso/sensor`                | Informa um evento de leitura de sensor (entrada/saída) | Simulador de Sensor    | Serviço de Autorização, Serviço de Permanência | `{"user_id": "user1", "sensor_id": "sensor_entrada", "timestamp": "..."}`                  |
-| `acesso/atuador/comando`       | Envia um comando para controlar a porta                | Serviço de Autorização | Simulador de Atuador                           | `"ABRIR"` ou `"FECHAR"` (String simples)                                                   |
-| `acesso/atuador/estado`        | (Opcional) Informa o estado atual da porta             | Simulador de Atuador   | (Qualquer monitor)                             | `"ABERTA"` ou `"FECHADA"` (String simples)                                                 |
-| `acesso/permanencia/relatorio` | Publica o relatório de permanência acumulado           | Serviço de Permanência | (Interface de usuário/monitor)                 | `[{"user_id": "...", "entrada": "...", "saida": "...", "duracao": "..."},...]`             |
-| `acesso/log/acesso`            | (Opcional) Registra tentativas de acesso e resultados  | Serviço de Autorização | (Sistema de log/monitor)                       | `{"user_id": "...", "sensor_id": "...", "timestamp": "...", "status": "permitido/negado"}` |
+O broker MQTT atua como o intermediário central. Este projeto foi testado com o broker público HiveMQ Cloud, mas pode ser adaptado para outros brokers.
 
-## Representando Sensores
+- **HiveMQ Cloud (Exemplo):**
+  - Vantagens: Configuração rápida, teste de conectividade real pela internet.
+  - Desvantagens: Latência potencial, privacidade (dados trafegam pela internet), limites de uso.
+- **Broker Local (Alternativa):**
+  - Vantagens: Baixa latência, maior controle sobre privacidade e segurança.
+  - Desvantagens: Requer instalação e configuração (ex: Mosquitto).
 
-Na simulação, os sensores são representados por identificadores lógicos únicos. Definiremos dois identificadores:
+## 3. Estrutura do Projeto
 
-- 'sensor_entrada'
-- 'sensor_saida'
-
-Em um sistema real, esses identificadores lógicos corresponderiam a dispositivos físicos distintos, potencialmente conectados a diferentes pinos GPIO de um microcontrolador ou até mesmo a microcontroladores separados comunicando-se com o broker MQTT.
-
-## Simulando Eventos de Usuário
-
-Para simular as leituras, precisamos de exemplos de identificadores de usuário, e uma forma de gerar eventos.
-
-- ID's de usuário: Definiremos listas de IDs para teste:
-
-```python
-authorized_users = ["user1", "user2", "admin"]
-unauthorized_users = ["userX", "guest"]
+```bash
+.
+├── .env                  # Credenciais e configurações (NÃO versionar)
+├── .gitignore            # Arquivos a serem ignorados pelo Git
+├── README.md             # Este arquivo
+├── main.py               # Script principal para iniciar e interagir com a simulação
+└── clients/              # Módulos dos componentes individuais
+    ├── auth_client.py    # Serviço de Autorização
+    ├── door_actuator.py  # Simulador do Atuador da Porta
+    └── permanence_client.py # Serviço de Cálculo de Permanência e Logs
 ```
 
-- Função de simulação: Uma função será criada para gerar os dados de um evento de leitura.
+## 4. Namespace de Tópicos MQTT
 
-```python
-import datetime
-import json
+Uma estrutura de tópicos bem definida é crucial. A seguinte estrutura é utilizada:
 
-def generate_sensor_event_payload(user_id, sensor_id):
-    """Gera o dicionário de dados para um evento de sensor."""
-    timestamp = datetime.datetime.now().isoformat()
-    payload = {
-        "user_id": user_id,
-        "sensor_id": sensor_id,
-        "timestamp": timestamp
-    }
-    return payload
+| Tópico                             | Propósito/Descrição                                      | Publicador Típico      | Assinante(s) Típico(s)                   | Exemplo de Formato de Mensagem (JSON)                                                      |
+| ---------------------------------- | -------------------------------------------------------- | ---------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `access/sensor`                    | Informa evento de leitura de sensor (entrada/saída)      | `main.py` (Simulador)  | `auth_client.py`, `permanence_client.py` | `{"user_id": "user1", "sensor_id": "sensor_entrada", "timestamp": "..."}`                  |
+| `access/actuator/command`          | Envia comando para controlar a porta                     | `auth_client.py`       | `door_actuator.py`                       | `"ABRIR"` ou `"FECHAR"` (String simples)                                                   |
+| `access/actuator/state`            | Informa o estado atual da porta (opcional)               | `door_actuator.py`     | (Qualquer monitor, `main.py` não usa)    | `"ABERTA"` ou `"FECHADA"` (String simples)                                                 |
+| `access/permanence/report`         | Publica o relatório de permanência acumulado             | `permanence_client.py` | `main.py`                                | `[{"user_id": "...", "entrada": "...", "saida": "...", "duracao": "..."},...]`             |
+| `access/permanence/request_report` | Solicita a publicação do relatório de permanência        | `main.py`              | `permanence_client.py`                   | (Payload irrelevante, tópico é o gatilho)                                                  |
+| `access/permanence/logs`           | Publica a lista de logs do sistema de permanência        | `permanence_client.py` | `main.py`                                | `["[timestamp] log message 1", "[timestamp] log message 2", ...]`                          |
+| `access/permanence/request_logs`   | Solicita a publicação dos logs do sistema de permanência | `main.py`              | `permanence_client.py`                   | (Payload irrelevante, tópico é o gatilho)                                                  |
+| `access/log/access`                | Registra tentativas de acesso e resultados (opcional)    | `auth_client.py`       | (Sistema de log/monitor externo)         | `{"user_id": "...", "sensor_id": "...", "timestamp": "...", "status": "permitido/negado"}` |
+
+## 5. Componentes da Simulação
+
+### 5.1. `main.py` (Simulador Principal)
+
+- **Responsabilidade:** Iniciar os outros clientes (`auth_client`, `door_actuator`, `permanence_client`) como processos separados, fornecer um menu interativo para simular eventos de sensor, solicitar relatórios e logs, e exibir as respostas recebidas via MQTT.
+- **Publica em:** `access/sensor`, `access/permanence/request_report`, `access/permanence/request_logs`.
+- **Assina:** `access/permanence/report`, `access/permanence/logs`.
+
+### 5.2. `clients/auth_client.py` (Serviço de Autorização)
+
+- **Responsabilidade:** Receber eventos de `access/sensor`, verificar se o `user_id` está na lista de usuários autorizados (`authorized_users`), e publicar comandos (`ABRIR`/`FECHAR`) em `access/actuator/command`. Também publica logs de acesso em `access/log/access`.
+- **Publica em:** `access/actuator/command`, `access/log/access`.
+- **Assina:** `access/sensor`.
+- **Lógica:**
+  - Entrada autorizada: Publica "ABRIR".
+  - Entrada não autorizada: Publica "FECHAR" (ou não faz nada se a porta já estiver fechada).
+  - Saída (qualquer usuário): Publica "ABRIR".
+
+### 5.3. `clients/door_actuator.py` (Simulador do Atuador da Porta)
+
+- **Responsabilidade:** Simular o comportamento físico da porta. Recebe comandos de `access/actuator/command` e atualiza seu estado interno (`ABERTA`/`FECHADA`). Publica seu estado atual em `access/actuator/state`.
+- **Publica em:** `access/actuator/state`.
+- **Assina:** `access/actuator/command`.
+- **Lógica:**
+  - Recebe "ABRIR": Muda estado para "ABERTA", publica estado, inicia timer de 5 segundos para fechar automaticamente.
+  - Recebe "FECHAR": Muda estado para "FECHADA", publica estado.
+  - Timer expira / Comando "FECHAR" recebido com porta aberta: Chama `close_door`.
+
+### 5.4. `clients/permanence_client.py` (Serviço de Permanência e Logs)
+
+- **Responsabilidade:**
+  - Receber eventos de `access/sensor` para usuários autorizados.
+  - Rastrear o tempo de entrada (`user_entry_times`).
+  - Calcular a duração da permanência quando um evento de saída correspondente é recebido.
+  - Armazenar um histórico dos últimos registros de permanência (`permanence_history`).
+  - Armazenar um histórico de logs internos do serviço (`system_logs`).
+  - Publicar o relatório de permanência em `access/permanence/report` quando solicitado via `access/permanence/request_report`.
+  - Publicar os logs do sistema em `access/permanence/logs` quando solicitado via `access/permanence/request_logs`.
+- **Publica em:** `access/permanence/report`, `access/permanence/logs`.
+- **Assina:** `access/sensor`, `access/permanence/request_report`, `access/permanence/request_logs`.
+- **Lógica:**
+  - Evento de entrada (autorizado): Armazena `user_id` e `timestamp` em `user_entry_times`.
+  - Evento de saída (autorizado, com entrada registrada): Recupera `timestamp` de entrada, calcula duração, armazena registro em `permanence_history`, remove de `user_entry_times`.
+  - Solicitação de relatório: Publica `permanence_history` como JSON.
+  - Solicitação de logs: Publica `system_logs` como JSON.
+  - Todas as operações importantes são logadas internamente em `system_logs` usando `log_message`.
+
+## 6. Executando a Simulação
+
+1. Certifique-se de que os pré-requisitos (Python, Paho-MQTT, python-dotenv) estão instalados.
+2. Configure o arquivo `.env` com as credenciais do seu broker MQTT.
+3. Execute o script principal:
+
+```bash
+python main.py
 ```
 
-- Esta função captura o ID do usuário, o ID do sensor e o timestamp atual, organizando-os em um dicionário Python.
+1. O `main.py` iniciará os três scripts clientes em processos separados e exibirá um menu interativo.
+2. Use as opções do menu para:
+    - Simular eventos de entrada/saída para usuários autorizados e não autorizados.
+    - Solicitar o relatório de permanência.
+    - Solicitar e exibir os logs internos do serviço de permanência.
+    - Encerrar a simulação (isso também tentará parar os processos clientes).
 
-## Serialização de Dados
+## 7. Serialização de Dados (JSON)
 
-A comunicação entre diferentes componentes (potencialmente escritos em linguagens diferentes ou rodando em plataformas distintas) exige um formato de dados padronizado. O JSON (JavaScript Object Notation) é uma escolha excelente para isso.
+A comunicação entre os componentes utiliza JSON como formato padrão para payloads de mensagens (exceto para comandos simples como "ABRIR"/"FECHAR").
 
-- Estrutura Padrão:
+- **Evento de Sensor (`access/sensor`):**
 
-```JSON
-{"user_id": "...", "sensor_id": "...", "timestamp": "..."}
+```json
+{"user_id": "user1", "sensor_id": "sensor_entrada", "timestamp": "2025-05-02T10:30:00.123456+00:00"}
 ```
 
-- Serialização: O dicionário Pyhton gerado pela `generate_sensor_event_payload` será convertido em uma string JSON usando a biblioteca json da linguagem.
+- **Relatório de Permanência (`access/permanence/report`):**
 
-```python
-payload_dict = generate_sensor_event_payload("user1", "sensor_entrada")
-json_payload = json.dumps(payload_dict)
-print(f"Payload JSON: {json_payload}")
+```json
+[
+    {"user_id": "user1", "entrada": "...", "saida": "...", "duracao": "0:05:12.345678"},
+    {"user_id": "user2", "entrada": "...", "saida": "...", "duracao": "0:15:02.111111"}
+]
 ```
 
-## Publicando no MQTT
+- **Logs do Sistema (`access/permanence/logs`):**
 
-A lógica de publicação será encapsulada em uma função que utiliza o cliente paho-mqtt conectado.
-
-```python
-def publish_sensor_data(client, user_id, sensor_id):
-    """Gera e publica dados de um evento de sensor via MQTT."""
-
-    payload_dict = generate_sensor_event_payload(user_id, sensor_id)
-    json_payload = json.dumps(payload_dict)
-
-    # Publica a mensagem no tópico do sensor
-    # QoS 1: Garante que a mensagem seja entregue pelo menos uma vez.
-    # É uma escolha razoável para eventos de acesso, onde a perda é indesejável.
-    result = client.publish(SENSOR_TOPIC, payload=json_payload, qos=1)
-    result.wait_for_publish() # Aguarda a confirmação da publicação (opcional, bom para depuração)
-
-    if result.rc == mqtt.MQTT_ERR_SUCCESS:
-        print(f"Mensagem publicada com sucesso: {json_payload} no tópico {SENSOR_TOPIC}")
-    else:
-        print(f"Falha ao publicar mensagem no tópico {SENSOR_TOPIC}: {result.rc}")
+```json
+[
+    "[2025-05-02 10:30:00] [Permanence] Connected to MQTT Broker.",
+    "[2025-05-02 10:31:15] [Permanence] User user1 entered at 2025-05-02 10:31:15.123+00:00.",
+    "[2025-05-02 10:36:27] [Permanence] User user1 exited at 2025-05-02 10:36:27.468+00:00. Duration: 0:05:12.345000."
+]
 ```
 
-## Simulação do Atuador da Porta
+- **Log de Acesso (`access/log/access`):**
 
-Este componente simula o comportamento físico da porta automática (abrir/fechar) em resposta aos comandos recebidos.
-
-### Representando o Estado da Porta
-
-Uma variável simples ou um atributo de classe pode ser usado para manter o estado atual da porta simulada.
-
-```python
-# Variável global ou atributo de classe
-door_state = "FECHADA" # Estados possíveis: "FECHADA", "ABERTA"
+```json
+  {"user_id": "user1", "sensor_id": "sensor_entrada", "timestamp": "...", "status": "AUTORIZADO"}
 ```
 
-### Simulando Ações do Atuador
+## 8. Considerações e Limitações
 
-Funções serão criadas para simular as ações de abrir e fechar a porta. Na simulação, essas ações consistem principalmente em atualizar a variável de estado e imprimir mensagens no console para visualização.
-
-```python
-def open_door(client):
-    """Simula a abertura da porta e publica o estado."""
-    global DOOR_STATE
-    if DOOR_STATE == "FECHADA":
-        DOOR_STATE = "ABERTA"
-        print(">>> [Actuator] Command received: ABRIR. Door opened.")
-        publish_door_state(client)
-        # Inicia um timer para fechar a porta automaticamente após 5 segundos
-        timer = threading.Timer(5.0, close_door, args=[client])
-        timer.daemon = True # Permite que o programa saia mesmo se o timer estiver ativo
-        timer.start()
-    else:
-        print(">>> [Actuator] Command received: ABRIR. Door was already open.")
-
-
-def close_door(client):
-    """Simula o fechamento da porta e publica o estado."""
-    global DOOR_STATE
-    if DOOR_STATE == "ABERTA":
-        DOOR_STATE = "FECHADA"
-        print(">>> [Actuator] Closing the door (automatically or by command). Door CLOSED.")
-        publish_door_state(client)
-    else:
-        print(">>> [Actuator] Command received: FECHAR. Door was already closed.")
-```
-
-### Gerenciando Usuários Autorizados
-
-A simulação utiliza um conjunto (set) Python em memória (authorized_users) para armazenar os IDs dos usuários permitidos. Usar um conjunto oferece busca (O(1) em média) mais eficiente do que uma lista (O(n)) à medida que o número de usuários cresce. Para um sistema mais flexível, esta lista poderia ser carregada de um arquivo de configuração (JSON, YAML, CSV) no início da execução do serviço.
-
-### Processamento de Mensagens
-
-Script: [auth_client](auth_client.py)
-
-A função `on_message` é o coração do assinante. Ela decodifica o payload da mensagem (que chega como bytes), tenta desserializar a string JSON para um dicionário Python usando `json.loads()`, e extrai os campos necessários (`user_id`, `sensor_id`, `timestamp`). É crucial incluir tratamento de erros (try-except) para lidar com mensagens malformadas ou JSON inválido, evitando que o serviço falhe.
-
-### Implementando a Lógica de Autorização
-
-A função `process_access_request` implementa a lógica central:
-
-1. Verifica se o `user_id` extraído está presente no conjunto `authorized_users`.
-2. Se o evento for do `sensor_entrada`:
-
-- Se autorizado, permite o acesso, imprime uma mensagem confirmatória e publica o comando `"ABRIR"` no tópico `acesso/atuador/comando`. O atuador (`door_actuator.py`) receberá este comando e simulará a abertura (incluindo o fechamento automático).
-- Se não autorizado, nega o acesso, imprime uma mensagem e **não** publica o comando `"ABRIR"`. Opcionalmente, poderia publicar `"FECHAR"` para garantir que a porta esteja fechada, mas geralmente não é necessário se o estado padrão for fechado.
-
-1. Se o evento for do `sensor_saida`: Conforme a especificação, a saída é assumida como sempre permitida. A função registra o evento e publica o comando `"ABRIR"` no tópico `access/actuator/command`.
-2. (Opcional) Publica um registro detalhado da tentativa de acesso (incluindo o status: `permitido`, `negado`, `saida_registrada`) no tópico `acesso/log/acesso`.
+- **Segurança:** Esta é uma simulação focada no fluxo lógico. Um sistema real exigiria:
+  - Criptografia TLS para a conexão MQTT.
+  - Mecanismos de autenticação/autorização robustos (não apenas uma lista em memória).
+  - Armazenamento seguro de credenciais e IDs autorizados.
+  - Proteção contra ataques de repetição.
+- **Persistência de Dados:** Os históricos (`permanence_history`, `system_logs`) e o estado de quem está dentro (`user_entry_times`) são mantidos em memória nos scripts Python. Se um script for reiniciado, esses dados são perdidos. Um sistema real usaria armazenamento persistente (arquivos, banco de dados).
+- **Confiabilidade MQTT:** A simulação usa QoS 1, que garante entrega *pelo menos uma vez*. Isso pode levar a processamento duplicado em cenários de falha/reconexão. A ordem das mensagens também não é garantida entre diferentes publicações. A lógica atual lida com algumas inconsistências (ex: saída sem entrada), mas sistemas robustos precisam de tratamento mais avançado.
+- **Escalabilidade:** A lista de usuários autorizados em memória no `auth_client` não escala bem. Sistemas maiores consultariam bancos de dados ou serviços de identidade externos.
