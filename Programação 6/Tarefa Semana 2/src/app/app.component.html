@@ -1,0 +1,18 @@
+<header>
+  <h1>Demonstração do uso de Signals</h1>
+  <nav>
+    @if (authService.isAuthenticated()) {
+      <button routerLink="/dashboard" routerLinkActive="active" class="btn">Dashboard</button>
+      <button routerLink="/settings" routerLinkActive="active" class="btn">Configurações</button>
+      <button (click)="logout()" class="btn">Sair</button>
+    } @else {
+      @if (!isLandingPage()) {
+        <button routerLink="/login" routerLinkActive="active" class="btn">Login</button>
+      }
+    }
+  </nav>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>

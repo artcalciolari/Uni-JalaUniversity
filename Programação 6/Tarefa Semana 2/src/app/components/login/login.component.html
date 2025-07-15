@@ -1,0 +1,36 @@
+<div class="login-container">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-field">
+      <label for="email">Email:</label>
+      <input id="email" type="email" formControlName="email">
+      
+      @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+        <div class="error">
+          @if (loginForm.get('email')?.errors?.['required']) {
+            <span>E-mail é obrigatório.</span>
+          }
+          @if (loginForm.get('email')?.errors?.['email']) {
+            <span>Formato de e-mail inválido.</span>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-field">
+      <label for="password">Senha:</label>
+      <input id="password" type="password" formControlName="password">
+      @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+        <div class="error">
+          <span>A senha é obrigatória e deve ter no mínimo 4 caracteres.</span>
+        </div>
+      }
+    </div>
+    
+    @if(loginError()) {
+      <div class="error api-error">{{ loginError() }}</div>
+    }
+
+    <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+  </form>
+</div>

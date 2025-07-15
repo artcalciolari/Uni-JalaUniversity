@@ -1,0 +1,26 @@
+<div class="dashboard-container">
+  @if (authService.currentUser(); as user) {
+    <h1>Bem-vindo ao Dashboard, {{ user.name }}!</h1>
+    
+    <h3>Suas Permissões:</h3>
+    <ul>
+      @for (permission of authService.userPermissions(); track permission) {
+        <li>{{ permission }}</li>
+      } @empty {
+        <li>Você não possui permissões especiais.</li>
+      }
+    </ul>
+
+    <h3>Suas Tarefas:</h3>
+    <ul>
+      @for (task of tasks(); track task.id) {
+        <li [class.done]="task.done">{{ task.title }}</li>
+      } @empty {
+        <li>Nenhuma tarefa encontrada.</li>
+      }
+    </ul>
+
+  } @else {
+    <p>Carregando informações do usuário...</p>
+  }
+</div>
