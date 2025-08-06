@@ -1,0 +1,26 @@
+<div class="container">
+  <header>
+    <h1>{{ title }}</h1>
+    <p>As notificações recebidas do servidor aparecerão abaixo em tempo real.</p>
+  </header>
+
+  <form (ngSubmit)="sendNotification()" #notifyForm="ngForm" class="notify-form">
+    <input type="text" name="message" [(ngModel)]="message" placeholder="Digite sua mensagem..." required [disabled]="isSending" />
+    <button type="submit" [disabled]="isSending || !message.trim()">{{ isSending ? 'Enviando...' : 'Enviar' }}</button>
+  </form>
+  <div *ngIf="sendError" class="error">{{ sendError }}</div>
+
+  <main>
+    <h2>Histórico de Notificações</h2>
+
+    <div *ngIf="notifications.length === 0" class="empty-state">
+      Aguardando notificações...
+    </div>
+
+    <ul *ngIf="notifications.length > 0">
+      <li *ngFor="let msg of notifications">
+        {{ msg }}
+      </li>
+    </ul>
+  </main>
+</div>
