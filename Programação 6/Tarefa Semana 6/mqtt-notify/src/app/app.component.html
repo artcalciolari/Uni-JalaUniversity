@@ -1,0 +1,28 @@
+<div class="wrap">
+  <header>
+    <h1>Notificações em tempo real</h1>
+    <div class="modes">
+      <button [class.active]="mode==='ws'" (click)="switchMode('ws')">Backend WebSocket</button>
+      <button [class.active]="mode==='paho'" (click)="switchMode('paho')">MQTT (paho)</button>
+    </div>
+    <div class="status">Status: <strong>{{ status }}</strong></div>
+  </header>
+  
+  <section class="actions">
+    <input [(ngModel)]="textToSend" placeholder="Mensagem para enviar" />
+    <button (click)="send()">Enviar</button>
+  </section>
+
+  <section class="history">
+    <h2>Histórico da sessão</h2>
+    <ul>
+      <li *ngFor="let n of history; trackBy: trackByIdx">
+        <span class="badge" [class.ws]="n.source==='ws'" [class.paho]="n.source==='paho'">{{ n.source }}</span>
+        <span class="type">{{ n.type }}</span>
+        <span class="topic" *ngIf="n.topic">({{ n.topic }})</span>
+        <span class="text">— {{ n.text }}</span>
+        <span class="ts">{{ n.ts | date:'medium' }}</span>
+      </li>
+    </ul>
+  </section>
+</div>
