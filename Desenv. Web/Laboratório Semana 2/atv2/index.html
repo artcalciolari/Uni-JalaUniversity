@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário e Armazenamento</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <header class="header">
+      <h1>Formulário de Contato</h1>
+    </header>
+
+    <main class="main">
+      <form id="contact-form" class="form-grid">
+        <h2>Preencha seus dados</h2>
+
+        <div class="form-group">
+          <label for="nome">Nome Completo</label>
+          <input type="text" id="nome" name="nome" required>
+          <span class="error-message"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+          <span class="error-message"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone" pattern="[0-9]{10,11}" placeholder="(XX)XXXXX-XXXX">
+          <span class="error-message"></span>
+        </div>
+
+        <div class="form-group-radio">
+          <label>Prefere contato por:</label>
+          <div class="radio-options">
+            <label><input type="radio" name="contato" value="email" checked> E-mail</label>
+            <label><input type="radio" name="contato" value="telefone"> Telefone</label>
+          </div>
+        </div>
+
+        <div class="form-group-checkbox">
+          <label><input type="checkbox" id="newsletter" name="newsletter"> Desejo receber a newsletter</label>
+        </div>
+
+        <div class="form-group-textarea">
+          <label for="mensagem">Mensagem</label>
+          <textarea id="mensagem" name="mensagem" rows="4"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit">Enviar</button>
+        </div>
+      </form>
+      <div id="confirmation-message" class="confirmation-message hidden">
+        Dados enviados com sucesso e salvos no seu navegador!
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; 2025 - Jala University</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
