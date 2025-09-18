@@ -48,7 +48,7 @@ export default defineConfig([
       'brace-style': ['error', 'allman', { allowSingleLine: false }],
       'quotes': ['error', 'single', { avoidEscape: true }],
       'semi': ['error', 'always'],
-      // Intentionally no "indent" here (TS indent rule is deprecated/unreliable)
+      'indent': ['error', 2, { SwitchCase: 1 }],
       'comma-dangle': ['error', 'always-multiline'],
       'object-curly-spacing': ['error', 'always'],
       'array-bracket-spacing': ['error', 'never'],

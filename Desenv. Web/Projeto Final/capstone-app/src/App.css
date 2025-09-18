@@ -1,68 +1,9 @@
-/* Grid principal da aplicação */
-.app-grid {
-  display: grid;
-  grid-template-areas: 
-    "header"
-    "body"
-    "footer";
-  grid-template-rows: auto 1fr auto;
-  min-height: 100vh;
-  gap: 1rem;
-  align-items: center;
-  justify-items: center;
-}
-
-.body {
-  grid-area: body;
-  max-width: 60%;
-  padding: 1rem;
-  text-align: center;
-}
-
+/* TODO: criar componente Footer */
 .footer {
   grid-area: footer;
   background-color: #FCFAF8;
   text-align: center;
   padding: 1rem;
-  min-width: 99%;
-}
-
-/* Lista de livros */
-.book-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-
-.main-title {
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.main-title h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #8C3C3C;
-  margin: 0 0 0.5rem 0;
-}
-
-.main-title h2 {
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: #8C3C3C;
-  margin: 0 0 0.5rem 0;
-}
-
-.main-title h3 {
-  font-size: 1.2rem;
-  font-weight: 400;
-  color: #555;
-  margin: 0;
-}
-
-hr {
-  border: none;
-  border-top: 1px solid #ddd;  /* Cor e espessura da linha */
-  margin: 1rem 0;  /* Espaçamento vertical */
+  width: 100%;
+  box-sizing: border-box;
 }

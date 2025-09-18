@@ -1,0 +1,53 @@
+/* "Cartão" principal */
+.bookCard {
+  width: 220px;
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.bookCard:hover {
+  transform: scale(1.05);  /* Leve aumento no tamanho */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);  /* Sombra mais intensa */
+  transition: transform 0.3s ease, box-shadow
+}
+
+/* "Caixa" para manter a altura das imagens constantes */
+.cover {
+  width: 180px;
+  height: 260px;
+  display: flex;
+  justify-content: center;
+    background: #f6f6f6;
+  border-radius: 6px; 
+}
+
+/* Encaixar a imagem ao invés de esticar ela */
+.cover img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.bookCard h2 {
+  font-size: 1rem;
+  margin: 0;
+  text-align: center;
+  /* Reserva duas linhas para títulos maiores */
+  min-height: 2.4em; 
+  line-height: 1.2; 
+}
+
+.bookCard p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0px;
+}
+
+.linkStyle {
+  text-decoration: none;
+  color: inherit;
+}
