@@ -141,16 +141,16 @@ export function useBookDetails(bKey: string)
         const bookDetails: BookDetails = {
           title: data.title || 'Título Desconhecido',
           authorKey: data.authors[0].author.key || 'Autor Desconhecido',
-          description: data.description || data.description?.value ||'Descrição não disponível',
-          tags: data.subjects.slice(0, 5) || [],
+          description: typeof data.description === 'string' ? data.description : (data.description?.value ?? 'Descrição não disponível'),
+          tags: data.subjects.slice(0, 7) || ['N/A'],
           coverId: data.covers?.[0] || -1,
-          timeEra: data.subject_times || [],
-          subjects: data.subject_people || [],
-          publishDate: data.first_publish_date || 'Data de publicação não disponível',
+          timeEra: data.subject_times || ['N/A'],
+          subjects: data.subject_people || ['N/A'],
+          publishDate: data.first_publish_date || 'N/A',
           latestRevision: data.latest_revision || 'N/A',
           revision: data.revision || 'N/A',
           created: data.created.value || 'N/A',
-          classifications: data.lc_classifications || [],
+          classifications: data.lc_classifications || ['N/A'],
         };
 
         setBookDetails(bookDetails);

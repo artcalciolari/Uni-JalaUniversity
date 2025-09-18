@@ -5,6 +5,8 @@ import Header from '../../components/Header/Header';
 import BookCover from '../../components/BookDetails/BookCover/BookCover';
 import BookInfo from '../../components/BookDetails/BookInfo/BookInfo';
 import AuthorDetails from '../../components/AuthorDetails/AuthorDetails';
+import Footer from '../../components/Footer/Footer';
+import { BookDetailsSkeleton } from '../../components/Skeleton/Skeleton';
 import styles from './BookDetails.module.css';
 
 export function BookDetailsPage() 
@@ -19,40 +21,44 @@ export function BookDetailsPage()
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         searchBooks={searchBooks}
-        className='header'
       />
 
       <main className={styles.mainContent}>
         {isLoading ? (
-          <h1>Carregando Detalhes do Livro...</h1>
-        ) :
-          bookDetails ? (
-            <div className={styles.bookDetails}> {/* GRID-AREA */}
-              <BookCover
-                className='cover'
-                coverId={bookDetails.coverId}
-                title={bookDetails.title}
-              />
-              <BookInfo
-                className='info'
-                title={bookDetails.title}
-                tags={bookDetails.tags}
-                timeEra={bookDetails.timeEra}
-                description={bookDetails.description}
-                publishDate={bookDetails.publishDate}
-                latestRevision={bookDetails.latestRevision}
-                revision={bookDetails.revision}
-                classifications={bookDetails.classifications}
-              />
-              <AuthorDetails
-                className='author'
-                authorKey={bookDetails.authorKey}
-              />
-            </div>
-          ): (
-            <h1>Detalhes do livro não encontrados.</h1>
-          )}
+          <BookDetailsSkeleton />
+        ) : bookDetails ? (
+          <div className={styles.bookDetails}>
+            <BookCover
+              coverId={bookDetails.coverId}
+              title={bookDetails.title} />
+            <BookInfo
+              title={bookDetails.title}
+              tags={bookDetails.tags}
+              timeEra={bookDetails.timeEra}
+              subjects={bookDetails.subjects}
+              description={bookDetails.description}
+              publishDate={bookDetails.publishDate}
+              latestRevision={bookDetails.latestRevision}
+              revision={bookDetails.revision}
+              classifications={bookDetails.classifications}
+            />
+          </div>
+        ) : (
+          <h1>Detalhes do livro não encontrados.</h1>
+        )}
       </main>
+
+      {bookDetails && (
+        <section className={styles.authorSection}>
+          <h2 className={styles.authorTitle}>Sobre o Autor</h2>
+          <AuthorDetails
+            authorKey={bookDetails.authorKey}
+          />
+        </section>
+      )}
+
+      <Footer />
     </div>
   );
+
 }

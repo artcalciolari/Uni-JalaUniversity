@@ -1,10 +1,10 @@
 import styles from './BookInfo.module.css';
 
 type BookInfoProps = {
-  className: string;
   title: string;
   tags: string[];
   timeEra: string[];
+  subjects: string[];
   description: string;
   publishDate: string;
   latestRevision: number;
@@ -12,7 +12,7 @@ type BookInfoProps = {
   classifications: string[];
 };
 
-function BookInfo({ title, tags, timeEra, description, publishDate, latestRevision, revision, classifications }: BookInfoProps) 
+function BookInfo({ title, tags, timeEra, subjects, description, publishDate, latestRevision, revision, classifications }: BookInfoProps) 
 {
   return (
     <div className={styles.info}>
@@ -20,10 +20,13 @@ function BookInfo({ title, tags, timeEra, description, publishDate, latestRevisi
         <h2>{title}</h2>
       </div>
       <div className={styles.tags}>
-        <p>{tags.join(', ')}</p>  {/* Exibe tags como lista separada por vírgula */}
+        <p>Tags: {tags.join(', ')}</p>  {/* Exibe tags como lista separada por vírgula */}
       </div>
       <div className={styles.timeEra}>
         <p>Se passa em: {timeEra.join(', ')}</p>
+      </div>
+      <div className={styles.subjects}>
+        <p>Personagens: {subjects.join(', ')}</p>
       </div>
       <hr />
       <div className={styles.description}>

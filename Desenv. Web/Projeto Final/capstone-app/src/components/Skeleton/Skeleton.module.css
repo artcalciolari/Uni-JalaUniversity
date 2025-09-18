@@ -1,0 +1,337 @@
+/* Modern Skeleton Loading Animations */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--neutral-200) 25%, var(--neutral-100) 50%, var(--neutral-200) 75%);
+  background-size: 200px 100%;
+  animation: shimmer 2s infinite ease-in-out;
+  border-radius: var(--radius-md);
+}
+
+/* Modern Book Card Skeleton */
+.bookCardSkeleton {
+  width: 280px;
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  background: white;
+  border: 1px solid var(--neutral-100);
+  position: relative;
+  overflow: hidden;
+}
+
+.bookCardSkeleton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--neutral-200), var(--neutral-300));
+}
+
+.bookCoverSkeleton {
+  width: 200px;
+  height: 300px;
+  border-radius: var(--radius-lg);
+  background: var(--neutral-200);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.bookTitleSkeleton {
+  width: 80%;
+  height: 24px;
+  margin: var(--space-3) 0 var(--space-2) 0;
+  background: var(--neutral-200);
+  border-radius: var(--radius-md);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.bookAuthorSkeleton {
+  width: 60%;
+  height: 18px;
+  margin: 0;
+  background: var(--neutral-100);
+  border-radius: var(--radius-sm);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Modern Book Details Skeleton */
+.bookDetailsSkeleton {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--space-8);
+  margin-bottom: var(--space-4);
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-8);
+  align-items: flex-start;
+  border: 1px solid var(--neutral-100);
+  position: relative;
+  overflow: hidden;
+}
+
+.bookDetailsSkeleton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--neutral-200), var(--neutral-300));
+}
+
+.bookCoverDetailSkeleton {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.bookCoverDetailSkeleton .coverImage {
+  width: 280px;
+  height: 420px;
+  border-radius: var(--radius-xl);
+  background: var(--neutral-200);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.bookCoverDetailSkeleton .reserveButton {
+  width: 180px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--neutral-200);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.bookInfoSkeleton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.bookTitleDetailSkeleton {
+  width: 70%;
+  height: 40px;
+  margin-bottom: var(--space-3);
+  background: var(--neutral-200);
+  border-radius: var(--radius-md);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.bookTagsSkeleton,
+.bookTimeEraSkeleton,
+.bookSubjectsSkeleton {
+  width: 120px;
+  height: 32px;
+  margin: var(--space-2) 0;
+  background: var(--neutral-100);
+  border-radius: var(--radius-full);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.bookDescriptionSkeleton {
+  width: 100%;
+  height: 120px;
+  border-radius: var(--radius-lg);
+  margin: var(--space-4) 0;
+  background: var(--neutral-50);
+  border-left: 4px solid var(--neutral-200);
+  position: relative;
+  padding: var(--space-6);
+}
+
+.bookDescriptionSkeleton::before {
+  content: '';
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-6);
+  right: var(--space-6);
+  bottom: var(--space-4);
+  background: var(--neutral-200);
+  border-radius: var(--radius-sm);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.bookMetaSkeleton {
+  width: 60%;
+  height: 48px;
+  margin: var(--space-2) 0;
+  background: var(--neutral-100);
+  border-radius: var(--radius-lg);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Modern Author Details Skeleton */
+.authorDetailsSkeleton {
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-8);
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+  border: 1px solid var(--neutral-100);
+  position: relative;
+  overflow: hidden;
+}
+
+.authorDetailsSkeleton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--neutral-200), var(--neutral-300));
+}
+
+.authorPhotoSkeleton {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.authorPhotoSkeleton .photoImage {
+  width: 200px;
+  height: 250px;
+  border-radius: var(--radius-lg);
+  background: var(--neutral-200);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.authorInfoSkeleton {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.authorNameSkeleton {
+  width: 60%;
+  height: 40px;
+  margin-bottom: var(--space-4);
+  background: var(--neutral-200);
+  border-radius: var(--radius-md);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.authorDateSkeleton {
+  width: 80%;
+  height: 20px;
+  margin: var(--space-2) 0;
+  background: var(--neutral-100);
+  border-radius: var(--radius-sm);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.authorBioSkeleton {
+  width: 100%;
+  height: 120px;
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-4);
+  background: var(--neutral-50);
+  border-left: 4px solid var(--neutral-200);
+  position: relative;
+  padding: var(--space-6);
+}
+
+.authorBioSkeleton::before {
+  content: '';
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-6);
+  right: var(--space-6);
+  bottom: var(--space-4);
+  background: var(--neutral-200);
+  border-radius: var(--radius-sm);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Modern Responsive Design para skeleton individual */
+@media (max-width: 768px) {
+  .bookCardSkeleton {
+    width: 240px;
+    padding: var(--space-4);
+  }
+
+  .bookCoverSkeleton {
+    width: 160px;
+    height: 240px;
+  }
+
+  .bookDetailsSkeleton,
+  .authorDetailsSkeleton {
+    grid-template-columns: 1fr;
+    align-items: center;
+    padding: var(--space-6);
+    gap: var(--space-6);
+  }
+  
+  .bookCoverDetailSkeleton .coverImage {
+    width: 240px;
+    height: 360px;
+  }
+  
+  .authorInfoSkeleton {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .authorPhotoSkeleton .photoImage {
+    width: 150px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bookCardSkeleton {
+    width: 200px;
+    padding: var(--space-3);
+  }
+
+  .bookCoverSkeleton {
+    width: 140px;
+    height: 200px;
+  }
+
+  .bookDetailsSkeleton,
+  .authorDetailsSkeleton {
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .bookCoverDetailSkeleton .coverImage {
+    width: 200px;
+    height: 300px;
+  }
+
+  .authorPhotoSkeleton .photoImage {
+    width: 120px;
+    height: 160px;
+  }
+}

@@ -1,53 +1,188 @@
-/* "Cartão" principal */
-.bookCard {
-  width: 220px;
-  padding: 16px;
-  border-radius: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.bookCard:hover {
-  transform: scale(1.05);  /* Leve aumento no tamanho */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);  /* Sombra mais intensa */
-  transition: transform 0.3s ease, box-shadow
-}
-
-/* "Caixa" para manter a altura das imagens constantes */
-.cover {
-  width: 180px;
-  height: 260px;
-  display: flex;
-  justify-content: center;
-    background: #f6f6f6;
-  border-radius: 6px; 
-}
-
-/* Encaixar a imagem ao invés de esticar ela */
-.cover img {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-.bookCard h2 {
-  font-size: 1rem;
-  margin: 0;
-  text-align: center;
-  /* Reserva duas linhas para títulos maiores */
-  min-height: 2.4em; 
-  line-height: 1.2; 
-}
-
-.bookCard p {
-  font-size: 0.9rem;
-  color: #555;
-  margin: 0px;
-}
-
+/* Modern Book Card Component */
 .linkStyle {
   text-decoration: none;
   color: inherit;
+  display: block;
+  width: 100%;
+}
+
+.bookCard {
+  width: 280px;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.bookCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.bookCard:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--primary-200);
+}
+
+.bookCard:hover::before {
+  opacity: 1;
+}
+
+.bookCard:active {
+  transform: translateY(-2px);
+}
+
+/* Cover Container */
+.cover {
+  width: 200px;
+  height: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, var(--neutral-100), var(--neutral-50));
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+}
+
+.bookCard:hover .cover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-lg);
+}
+
+.cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all var(--transition-base);
+}
+
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 60%, rgba(0,0,0,0.1));
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.bookCard:hover .cover::after {
+  opacity: 1;
+}
+
+/* Book Info */
+.bookInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.bookCard h2 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+  margin: 0;
+  min-height: 2.5em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color var(--transition-fast);
+}
+
+.bookCard:hover h2 {
+  color: var(--primary-700);
+}
+
+.bookCard p {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  margin: 0;
+  transition: color var(--transition-fast);
+}
+
+.bookCard:hover p {
+  color: var(--primary-600);
+}
+
+/* Reading indicator */
+.readingIndicator {
+  width: 100%;
+  height: 2px;
+  background: var(--neutral-200);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: var(--space-2);
+}
+
+.readingProgress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary-500), var(--primary-600));
+  border-radius: var(--radius-full);
+  width: 0%;
+  transition: width var(--transition-slow);
+}
+
+.bookCard:hover .readingProgress {
+  width: 30%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .bookCard {
+    width: 240px;
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .cover {
+    width: 160px;
+    height: 220px;
+  }
+
+  .bookCard h2 {
+    font-size: var(--text-base);
+  }
+
+  .bookCard p {
+    font-size: var(--text-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .bookCard {
+    width: 200px;
+    padding: var(--space-3);
+  }
+
+  .cover {
+    width: 140px;
+    height: 200px;
+  }
 }

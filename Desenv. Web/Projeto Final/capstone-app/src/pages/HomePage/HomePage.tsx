@@ -2,6 +2,8 @@ import { useSearch } from '../../contexts/SearchContext';
 import styles from './HomePage.module.css';
 import BookCard from '../../components/BookCard/BookCard';
 import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import { BookListSkeleton } from '../../components/Skeleton/Skeleton';
 
 export function HomePage() 
 {
@@ -13,28 +15,31 @@ export function HomePage()
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         searchBooks={searchBooks}
-        className='header'
       />
       
       <main className={styles.body}>
-        <div className={styles.mainTitle}>
+        <section className={styles.mainTitle}>
           {hasSearched ? (
-            <h1>Resultados da busca por '{searchTerm}'</h1>
+            <>
+              <h1>Resultados da busca</h1>
+              <h2>"{searchTerm}"</h2>
+              <h3>Encontramos {books.length} livros para você</h3>
+            </>
           ) : (
             <>
-              <h1>Procurando Por Um Livro?</h1>
-              <h2>Nós Podemos Te Ajudar Com Isso!</h2>
-              <h3>Esses são alguns dos livros mais famosos de ficção. Dê uma olhada!</h3>
+              <h1>Descubra Seu Próximo Livro</h1>
+              <h2>Explore nossa coleção cuidadosamente selecionada</h2>
+              <h3>Milhares de títulos esperando para serem descobertos por você</h3>
             </>
           )}
-        </div>
+        </section>
 
-        <hr />
+        <hr className={styles.divider} />
 
-        <div className={styles.bookList}>
+        <section className={styles.bookList}>
           {isLoading ? (
-            <p>Carregando livros...</p>
-          ) : (
+            <BookListSkeleton count={12} />
+          ) : books.length > 0 ? (
             books.map((book) => (
               <BookCard
                 key={book.key}
@@ -44,15 +49,19 @@ export function HomePage()
                 cover_id={book.cover_id}
               />
             ))
-          )}
-        </div>
+          ) : hasSearched ? (
+            <div className={styles.emptyState}>
+              <h3 className={styles.emptyStateTitle}>Nenhum livro encontrado</h3>
+              <p className={styles.emptyStateDescription}>
+                Tente ajustar sua busca ou explore nossa coleção em destaque
+              </p>
+            </div>
+          ) : null}
+        </section>
 
       </main>
 
-      {/* CRIAR COMPONENTE DO FOOTER */}
-      <footer className='footer'>
-        <p>&copy; 2025 Bookflow. Todos os direitos reservados.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

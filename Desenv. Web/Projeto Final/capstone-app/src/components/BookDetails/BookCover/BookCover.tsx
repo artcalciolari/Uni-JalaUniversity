@@ -1,7 +1,6 @@
 import styles from './BookCover.module.css';
 
 type BookCoverProps = {
-  className: string;
   coverId: number;
   title: string;
 };

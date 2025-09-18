@@ -1,9 +1,0 @@
-/* TODO: criar componente Footer */
-.footer {
-  grid-area: footer;
-  background-color: #FCFAF8;
-  text-align: center;
-  padding: 1rem;
-  width: 100%;
-  box-sizing: border-box;
-}
