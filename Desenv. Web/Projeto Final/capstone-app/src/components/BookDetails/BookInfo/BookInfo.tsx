@@ -1,17 +1,60 @@
 import styles from './BookInfo.module.css';
 
-type BookInfoProps = {
+/**
+ * Propriedades aceitas pelo componente BookInfo
+ * @category Types
+ */
+export type BookInfoProps = {
+  /** Título do livro */
   title: string;
+  /** Lista de tags/categorias do livro */
   tags: string[];
+  /** Períodos históricos em que a história se passa */
   timeEra: string[];
+  /** Temas ou personagens principais do livro */
   subjects: string[];
+  /** Descrição ou sinopse do livro */
   description: string;
+  /** Data de publicação */
   publishDate: string;
+  /** Número da última revisão */
   latestRevision: number;
+  /** Número da revisão atual */
   revision: number;
+  /** Sistema de classificação bibliográfica */
   classifications: string[];
 };
 
+/**
+ * Componente que exibe informações detalhadas de um livro.
+ * Apresenta título, categorização, descrição e metadados de publicação.
+ * 
+ * @param props - Propriedades com informações do livro
+ * @returns Elemento JSX com detalhes do livro
+ * 
+ * @example
+ * ```tsx
+ * <BookInfo
+ *   title="Dom Quixote"
+ *   tags={["Clássico", "Literatura Espanhola"]}
+ *   timeEra={["Século XVII"]}
+ *   subjects={["Dom Quixote", "Sancho Pança"]}
+ *   description="Uma obra-prima da literatura mundial..."
+ *   publishDate="1605"
+ *   latestRevision={10}
+ *   revision={8}
+ *   classifications={["Ficção", "Romance"]}
+ * />
+ * ```
+ * 
+ * Organiza e apresenta metadados do livro em seções estruturadas:
+ * - Título principal
+ * - Categorização (tags, época, personagens)
+ * - Descrição completa
+ * - Informações de publicação e revisão
+ * 
+ * @category Components
+ */
 function BookInfo({ title, tags, timeEra, subjects, description, publishDate, latestRevision, revision, classifications }: BookInfoProps) 
 {
   return (

@@ -1,10 +1,36 @@
 import styles from './Footer.module.css';
 import { FaGithub, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
-type FooterProps = {
+/**
+ * Propriedades aceitas pelo componente Footer
+ * @category Types
+ */
+export type FooterProps = {
+  /** Classes CSS adicionais para personalização */
   className?: string;
 }
 
+/**
+ * Componente rodapé da aplicação BookFlow.
+ * Contém informações da marca, links sociais, navegação e informações legais.
+ * 
+ * @param props - Propriedades do Footer
+ * @returns Elemento JSX do rodapé
+ * 
+ * @example
+ * ```tsx
+ * <Footer className="custom-footer" />
+ * ```
+ * 
+ * O Footer inclui seções organizadas com:
+ * - Marca e descrição da aplicação
+ * - Links para redes sociais
+ * - Menu de navegação rápida
+ * - Informações de contato e suporte
+ * - Copyright e políticas legais
+ * 
+ * @category Components
+ */
 function Footer({ className }: FooterProps) 
 {
   return (

@@ -9,10 +9,39 @@ import Footer from '../../components/Footer/Footer';
 import { BookDetailsSkeleton } from '../../components/Skeleton/Skeleton';
 import styles from './BookDetails.module.css';
 
+/**
+ * Página de detalhes de um livro específico.
+ * Exibe informações completas incluindo capa, descrição, autor e detalhes técnicos.
+ * 
+ * @returns Elemento JSX da página de detalhes do livro
+ * 
+ * @example
+ * ```tsx
+ * // Rota: /book/:bKey
+ * <BookDetailsPage />
+ * ```
+ * 
+ * A BookDetailsPage apresenta informações detalhadas de um livro e inclui:
+ * - Header com funcionalidade de busca mantida
+ * - Layout em grid com capa do livro e informações
+ * - Seção de detalhes do autor quando disponível
+ * - Estados de loading com skeleton
+ * - Footer com informações adicionais
+ * 
+ * Utiliza o parâmetro `bKey` da URL para buscar dados específicos do livro
+ * através do hook `useBookDetails`.
+ * 
+ * @category Pages
+ */
 export function BookDetailsPage() 
 {
+  /** Parâmetro da URL contendo a chave do livro */
   const { bKey } = useParams();
+  
+  /** Contexto de busca para manter funcionalidade de pesquisa no header */
   const { searchTerm, setSearchTerm, searchBooks } = useSearch();
+  
+  /** Hook para buscar detalhes específicos do livro */
   const { bookDetails, isLoading } = useBookDetails(bKey || '');
 
   return (
@@ -50,7 +79,7 @@ export function BookDetailsPage()
 
       {bookDetails && (
         <section className={styles.authorSection}>
-          <h2 className={styles.authorTitle}>Sobre o Autor</h2>
+          <h2 className={styles.authorTitle}>Sobre o Autor(a)</h2>
           <AuthorDetails
             authorKey={bookDetails.authorKey}
           />

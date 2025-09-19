@@ -33,7 +33,7 @@
 }
 
 .header img {
-  height: 48px;
+  height: 90px;
   width: auto;
   transition: transform var(--transition-fast);
 }

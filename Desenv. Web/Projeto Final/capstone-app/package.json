@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docs": "typedoc",
+    "docs:watch": "typedoc --watch",
+    "docs:serve": "npx serve docs"
   },
   "dependencies": {
     "react": "^19.1.1",

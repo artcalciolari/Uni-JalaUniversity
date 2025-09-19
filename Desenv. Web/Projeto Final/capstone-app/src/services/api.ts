@@ -1,57 +1,131 @@
 import { useState, useEffect } from 'react';
 
-// Interface para a resposta da API inicial,
-// feita quando o programa inicia
+/**
+ * Interface para a resposta da API inicial de livros.
+ * Usada quando o programa inicia e carrega livros padrão.
+ * @category Types
+ */
 interface ApiBookResponse {
+  /** Chave única do livro na API */
   key: string;
+  /** Título do livro */
   title: string;
+  /** Lista de autores */
   authors?: { name: string }[];
+  /** ID da capa do livro */
   cover_id: number;
 }
 
-// Interface para a resposta da API de busca,
-// feita quando o usuário pesquisa por um livro
+/**
+ * Interface para a resposta da API de busca.
+ * Usada quando o usuário pesquisa por um livro específico.
+ * @category Types
+ */
 interface SearchBookResponse {
+  /** Chave única do livro na API */
   key: string;
+  /** Título do livro */
   title: string;
+  /** Array com nomes dos autores */
   author_name?: string[];
+  /** ID da capa do livro (nome diferente na busca) */
   cover_i: number;
 }
 
-// Tipo normalizado de um livro
-type Book = {
+/**
+ * Tipo normalizado de um livro.
+ * Formato padrão usado em toda a aplicação.
+ * @category Types
+ */
+export type Book = {
+  /** Chave única do livro na API */
   key: string;
+  /** Título do livro */
   title: string;
+  /** Lista de autores */
   authors?: { name: string }[];
+  /** ID da capa do livro */
   cover_id: number;
 };
 
-// Tipo detalhado de um livro
-type BookDetails = {
+/**
+ * Tipo detalhado de um livro com todas as informações.
+ * Usado na página de detalhes do livro.
+ * @category Types
+ */
+export type BookDetails = {
+  /** Título do livro */
   title: string;
+  /** Chave do autor principal */
   authorKey?: string;
+  /** Descrição/sinopse do livro */
   description: string;
+  /** Tags/assuntos do livro */
   tags: string[];
+  /** ID da capa */
   coverId: number;
+  /** Períodos históricos relacionados */
   timeEra: string[];
+  /** Assuntos/temas abordados */
   subjects: string[];
+  /** Data de primeira publicação */
   publishDate: string;
+  /** Número da última revisão */
   latestRevision: number;
+  /** Número da revisão atual */
   revision: number;
+  /** Data de criação do registro */
   created: string;
+  /** Classificações da biblioteca */
   classifications: string[];
 }
 
-// Tipo detalhado de um autor
-type AuthorDetails = {
+/**
+ * Tipo detalhado de um autor.
+ * Contém informações biográficas completas.
+ * @category Types
+ */
+export type AuthorDetails = {
+  /** Nome completo do autor */
   name: string;
+  /** Data de nascimento */
   birthDate: string;
+  /** Data de falecimento */
   deathDate: string;
+  /** Biografia do autor */
   bio: string;
+  /** ID da foto do autor */
   photoId: number;
 }
 
 
+/**
+ * Hook personalizado para gerenciar lista de livros e busca.
+ * Carrega livros de ficção científica por padrão e permite busca personalizada.
+ * 
+ * @returns Objeto contendo lista de livros, estado de loading e função de busca
+ * 
+ * @example
+ * ```tsx
+ * function BookList() {
+ *   const { books, isLoading, hasSearched, searchBooks } = useBooks();
+ *   
+ *   const handleSearch = (query: string) => {
+ *     searchBooks(query);
+ *   };
+ *   
+ *   if (isLoading) return <div>Carregando...</div>;
+ *   
+ *   return (
+ *     <div>
+ *       {books.map(book => <BookCard key={book.key} {...book} />)}
+ *     </div>
+ *   );
+ * }
+ * ```
+ * 
+ * @category Hooks
+ */
 export function useBooks() 
 {
   const [books, setBooks] = useState<Book[]>([]);
@@ -60,6 +134,10 @@ export function useBooks()
 
   useEffect(() => 
   {
+    /**
+     * Busca livros de ficção científica da API do Open Library.
+     * Executado apenas uma vez na montagem do componente.
+     */
     const fetchBooks = async() => 
     {
       try 
@@ -87,8 +165,14 @@ export function useBooks()
     };
 
     fetchBooks();
-  }, []); // O array vazio faz com que o efeito seja executado apenas uma vez, após a montagem do componente
+  }, []);
 
+  /**
+   * Executa busca de livros baseada em query do usuário.
+   * Substitui a lista atual de livros pelos resultados da busca.
+   * 
+   * @param query - Termo de busca inserido pelo usuário
+   */
   const searchBooks = async(query: string) => 
   {
     try 
@@ -121,6 +205,33 @@ export function useBooks()
   return { books, isLoading, hasSearched, searchBooks };
 }
 
+/**
+ * Hook personalizado para obter detalhes de um livro específico.
+ * Busca informações completas de um livro pela sua chave única.
+ * 
+ * @param bKey - Chave única do livro (ex: "OL12345W")
+ * @returns Objeto contendo detalhes do livro e estado de loading
+ * 
+ * @example
+ * ```tsx
+ * function BookDetailsPage() {
+ *   const { bKey } = useParams();
+ *   const { bookDetails, isLoading } = useBookDetails(bKey);
+ *   
+ *   if (isLoading) return <div>Carregando detalhes...</div>;
+ *   if (!bookDetails) return <div>Livro não encontrado</div>;
+ *   
+ *   return (
+ *     <div>
+ *       <h1>{bookDetails.title}</h1>
+ *       <p>{bookDetails.description}</p>
+ *     </div>
+ *   );
+ * }
+ * ```
+ * 
+ * @category Hooks
+ */
 export function useBookDetails(bKey: string) 
 {
   const [bookDetails, setBookDetails] = useState<BookDetails | null>(null);
@@ -130,6 +241,10 @@ export function useBookDetails(bKey: string)
   {
     if (!bKey) return;
     
+    /**
+     * Busca detalhes completos de um livro pela sua chave.
+     * Processa e normaliza os dados da API para o formato esperado.
+     */
     const fetchBookDetails = async() => 
     {
       try 
@@ -166,11 +281,38 @@ export function useBookDetails(bKey: string)
     };
 
     fetchBookDetails();
-  }, [bKey]); // O efeito é executado sempre que a bKey muda
+  }, [bKey]);
 
   return { bookDetails, isLoading };
 }
 
+/**
+ * Hook personalizado para obter detalhes de um autor específico.
+ * Busca informações biográficas completas de um autor pela sua chave única.
+ * 
+ * @param authorKey - Chave única do autor (ex: "/authors/OL12345A")
+ * @returns Objeto contendo detalhes do autor e estado de loading
+ * 
+ * @example
+ * ```tsx
+ * function AuthorBio() {
+ *   const { authorDetails, isLoadingAuthor } = useAuthorDetails("/authors/OL12345A");
+ *   
+ *   if (isLoadingAuthor) return <div>Carregando autor...</div>;
+ *   if (!authorDetails) return <div>Autor não encontrado</div>;
+ *   
+ *   return (
+ *     <div>
+ *       <h2>{authorDetails.name}</h2>
+ *       <p>{authorDetails.birthDate} - {authorDetails.deathDate}</p>
+ *       <p>{authorDetails.bio}</p>
+ *     </div>
+ *   );
+ * }
+ * ```
+ * 
+ * @category Hooks
+ */
 export function useAuthorDetails(authorKey: string) 
 {
   const [authorDetails, setAuthorDetails] = useState<AuthorDetails | null>(null);
@@ -180,6 +322,10 @@ export function useAuthorDetails(authorKey: string)
   {
     if (!authorKey) return;
 
+    /**
+     * Busca detalhes biográficos de um autor pela sua chave.
+     * Processa e normaliza os dados da API para o formato esperado.
+     */
     const fetchAuthorDetails = async() => 
     {
       try
@@ -210,7 +356,7 @@ export function useAuthorDetails(authorKey: string)
     };
 
     fetchAuthorDetails();
-  }, [authorKey]); // O efeito é executado sempre que a authorKey muda
+  }, [authorKey]);
 
   return { authorDetails, isLoadingAuthor };
 }

@@ -5,8 +5,32 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import { BookListSkeleton } from '../../components/Skeleton/Skeleton';
 
+/**
+ * Página inicial da aplicação BookFlow.
+ * Exibe uma lista de livros populares e permite buscar por títulos específicos.
+ * 
+ * @returns Elemento JSX da página inicial
+ * 
+ * @example
+ * ```tsx
+ * <HomePage />
+ * ```
+ * 
+ * A HomePage é a página principal da aplicação e inclui:
+ * - Header com campo de busca integrado
+ * - Seção hero com título e descrição dinâmicos
+ * - Lista de livros em grid responsivo
+ * - Estados de loading, erro e busca vazia
+ * - Footer com informações adicionais
+ * 
+ * Utiliza o SearchContext para gerenciar estado global de busca,
+ * permitindo navegação entre páginas mantendo resultados.
+ * 
+ * @category Pages
+ */
 export function HomePage() 
 {
+  /** Contexto de busca com dados de livros e controles de pesquisa */
   const { books, searchTerm, setSearchTerm, searchBooks, hasSearched, isLoading } = useSearch();
 
   return (
