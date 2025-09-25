@@ -59,6 +59,32 @@
   align-items: flex-start;
 }
 
+/* Nova classe para a coluna esquerda */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  height: 100%;
+}
+
+/* Container da capa do livro */
+.bookCoverContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Container do botão */
+.buttonContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
 .bookDetails::before {
   content: '';
   position: absolute;
@@ -67,6 +93,124 @@
   right: 0;
   height: 4px;
   background: linear-gradient(90deg, var(--primary-500), var(--accent-500));
+}
+
+/* Botão de reserva padrão */
+.reserveBtn {
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+  color: white;
+  border: none;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-full);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  min-width: 180px;
+  width: 100%;
+  max-width: 250px;
+}
+
+.reserveBtn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left var(--transition-default);
+}
+
+.reserveBtn:hover {
+  background: linear-gradient(135deg, var(--primary-700) 0%, var(--primary-800) 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.reserveBtn:hover::before {
+  left: 100%;
+}
+
+.reserveBtn:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-md);
+}
+
+/* Botão desabilitado (reservado) */
+.disabledBtn {
+  background: var(--neutral-300);
+  color: var(--neutral-600);
+  border: 2px solid var(--neutral-400);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-full);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  cursor: not-allowed;
+  min-width: 180px;
+  width: 100%;
+  max-width: 250px;
+  transition: all var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* Ícone do livro reservado */
+.iconReserved {
+  color: var(--success-600);
+  font-size: var(--text-xl);
+  animation: fadeInScale 0.5s ease-out;
+}
+
+/* Estado reservado - container com animação */
+.buttonContainer:has(.disabledBtn) {
+  animation: reservedState 0.6s ease-out;
+}
+
+/* Animações */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes reservedState {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Hover states para melhor UX */
+.disabledBtn:hover {
+  background: var(--neutral-300);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Focus states para acessibilidade */
+.reserveBtn:focus,
+.disabledBtn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(226, 93, 27, 0.3);
 }
 
 .authorSection {
@@ -116,48 +260,86 @@
   .pageGrid {
     gap: 0;
   }
-  
+
   .mainContent,
   .authorSection {
     padding: var(--space-4) var(--space-3);
   }
-  
+
   .bookDetails {
     grid-template-columns: 1fr;
     align-items: center;
     padding: var(--space-6);
     gap: var(--space-6);
   }
-  
-  .mainContent h1 {
-    font-size: var(--text-2xl);
-    margin: var(--space-4) 0 var(--space-6) 0;
+
+  /* Em mobile, volta ao layout horizontal */
+  .leftColumn {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
   }
-  
-  .authorTitle {
-    font-size: var(--text-2xl);
-    margin: 0 0 var(--space-6) 0;
+
+  .bookCoverContainer,
+  .buttonContainer {
+    flex: none;
+  }
+
+  .buttonContainer {
+    margin-left: auto;
+    flex-direction: row;
+    gap: var(--space-2);
+  }
+
+  .reserveBtn,
+  .disabledBtn {
+    min-width: 120px;
+    max-width: 150px;
+    font-size: var(--text-sm);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .iconReserved {
+    font-size: var(--text-lg);
   }
 }
 
 @media (max-width: 480px) {
+
   .mainContent,
   .authorSection {
     padding: var(--space-3) var(--space-2);
   }
-  
+
   .bookDetails {
     padding: var(--space-4);
     gap: var(--space-4);
   }
-  
+
   .mainContent h1 {
     font-size: var(--text-xl);
     margin: var(--space-3) 0 var(--space-4) 0;
   }
-  
+
   .authorTitle {
     font-size: var(--text-xl);
     margin: 0 0 var(--space-4) 0;
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .reserveBtn,
+  .disabledBtn {
+    min-width: 100px;
+    max-width: 120px;
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+  }
+
+  .iconReserved {
+    font-size: var(--text-base);
   }
 }

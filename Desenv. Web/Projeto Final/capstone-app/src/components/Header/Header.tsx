@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
-import styles from './Header.module.css';
 import { FiSearch } from 'react-icons/fi';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import styles from './Header.module.css';
 
 /**
  * Propriedades aceitas pelo componente Header
@@ -43,6 +45,9 @@ export type HeaderProps = {
  */
 function Header({ searchTerm, setSearchTerm, searchBooks, className }: HeaderProps) 
 {
+  const { currentUser, logout } = useAuth()!;
+  const navigate = useNavigate();
+
   /**
    * Manipula o envio do formulário de busca
    * @param e - Evento de submit do formulário
@@ -94,10 +99,29 @@ function Header({ searchTerm, setSearchTerm, searchBooks, className }: HeaderPro
       </div>
 
       {/* Actions Section */}
-      <div className={styles.actionsSection}>
-        <button className={styles.LoginBtn}>Entrar</button>
-        <button className={styles.SignUpBtn}>Cadastrar</button>
-      </div>
+      {currentUser ? (
+        <div className={styles.actionsSection}>
+          <span className={styles.welcomeMessage}>Bem-vindo, {currentUser!.firstName}!</span>
+          <Link to="/profile" className={styles.LoginBtn}>Perfil</Link>
+          <button className={styles.SignUpBtn} onClick={() => 
+          {
+            logout();
+            setTimeout(() => 
+            {
+              navigate('/');
+            }, 300);
+          }}>Sair</button>
+        </div>
+      ) : (
+        <div className={styles.actionsSection}>
+          <Link to={'/login'}>
+            <button className={styles.LoginBtn}>Entrar</button>
+          </Link>
+          <Link to={'/register'}>
+            <button className={styles.SignUpBtn}>Cadastrar</button>
+          </Link>
+        </div>
+      )}
     </header>
   );
 }

@@ -1,13 +1,16 @@
 import { useSearch } from '../../contexts/SearchContext';
 import { useBookDetails } from '../../services/api';
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { BookDetailsSkeleton } from '../../components/Skeleton/Skeleton';
+import { useLending } from '../../contexts/LoanContext';
 import Header from '../../components/Header/Header';
 import BookCover from '../../components/BookDetails/BookCover/BookCover';
 import BookInfo from '../../components/BookDetails/BookInfo/BookInfo';
 import AuthorDetails from '../../components/AuthorDetails/AuthorDetails';
 import Footer from '../../components/Footer/Footer';
-import { BookDetailsSkeleton } from '../../components/Skeleton/Skeleton';
 import styles from './BookDetails.module.css';
+import { FaCheckCircle } from 'react-icons/fa';
 
 /**
  * Página de detalhes de um livro específico.
@@ -37,6 +40,10 @@ export function BookDetailsPage()
 {
   /** Parâmetro da URL contendo a chave do livro */
   const { bKey } = useParams();
+
+  const { currentUser } = useAuth();
+
+  const { addLoan, isBookLoaned } = useLending();
   
   /** Contexto de busca para manter funcionalidade de pesquisa no header */
   const { searchTerm, setSearchTerm, searchBooks } = useSearch();
@@ -57,20 +64,40 @@ export function BookDetailsPage()
           <BookDetailsSkeleton />
         ) : bookDetails ? (
           <div className={styles.bookDetails}>
-            <BookCover
-              coverId={bookDetails.coverId}
-              title={bookDetails.title} />
-            <BookInfo
-              title={bookDetails.title}
-              tags={bookDetails.tags}
-              timeEra={bookDetails.timeEra}
-              subjects={bookDetails.subjects}
-              description={bookDetails.description}
-              publishDate={bookDetails.publishDate}
-              latestRevision={bookDetails.latestRevision}
-              revision={bookDetails.revision}
-              classifications={bookDetails.classifications}
-            />
+            <div className={styles.leftColumn}>
+              <div className={styles.bookCoverContainer}>
+                <BookCover
+                  coverId={bookDetails.coverId}
+                  title={bookDetails.title}
+                />
+              </div>
+              <div className={styles.buttonContainer}>
+                {isBookLoaned(bKey!) ? (
+                  <>
+                    <FaCheckCircle className={styles.iconReserved} />
+                    <button className={styles.disabledBtn} disabled>Reservado</button>
+                  </>
+                ) : (currentUser ? (
+                  <button
+                    className={styles.reserveBtn}
+                    onClick={() => addLoan(bKey!, bookDetails.title, currentUser.email)}
+                  >Reservar</button>) : (null)
+                )}
+              </div>
+            </div>
+            <div className={styles.rightColumn}>
+              <BookInfo
+                title={bookDetails.title}
+                tags={bookDetails.tags}
+                timeEra={bookDetails.timeEra}
+                subjects={bookDetails.subjects}
+                description={bookDetails.description}
+                publishDate={bookDetails.publishDate}
+                latestRevision={bookDetails.latestRevision}
+                revision={bookDetails.revision}
+                classifications={bookDetails.classifications}
+              />
+            </div>
           </div>
         ) : (
           <h1>Detalhes do livro não encontrados.</h1>
@@ -89,5 +116,4 @@ export function BookDetailsPage()
       <Footer />
     </div>
   );
-
 }

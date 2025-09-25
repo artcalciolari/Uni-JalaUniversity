@@ -32,14 +32,13 @@ export type BookCoverProps = {
  * @category Components
  */
 function BookCover({ coverId, title }: BookCoverProps) 
-{
+{  
   return (
     <div className={styles.cover}>
       <img
         src={`https://covers.openlibrary.org/b/id/${coverId}-L.jpg`}
         alt={`Capa do livro ${title}`}
       />
-      <button className={styles.reserveBtn}>Reservar</button>
     </div>
   );
 }

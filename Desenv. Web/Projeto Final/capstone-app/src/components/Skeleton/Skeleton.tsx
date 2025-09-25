@@ -1,6 +1,18 @@
 import styles from './Skeleton.module.css';
 
-// Skeleton para um card de livro individual
+/**
+ * Componente skeleton que simula o layout de um card de livro durante o carregamento.
+ * Exibe placeholders animados para capa, título e autor.
+ * 
+ * @returns Elemento JSX do skeleton de card de livro
+ * 
+ * @example
+ * ```tsx
+ * <BookCardSkeleton />
+ * ```
+ * 
+ * @category Components
+ */
 export function BookCardSkeleton() 
 {
   return (
@@ -12,7 +24,20 @@ export function BookCardSkeleton()
   );
 }
 
-// Skeleton para lista de livros (múltiplos cards) - SEM container próprio
+/**
+ * Componente que renderiza múltiplos skeletons de cards de livro.
+ * Usado para simular uma lista de livros durante o carregamento.
+ * 
+ * @param count - Número de skeletons a serem renderizados (padrão: 12)
+ * @returns Array de elementos JSX de skeletons de cards
+ * 
+ * @example
+ * ```tsx
+ * <BookListSkeleton count={8} />
+ * ```
+ * 
+ * @category Components
+ */
 export function BookListSkeleton({ count = 12 }: { count?: number }) 
 {
   return (
@@ -24,7 +49,19 @@ export function BookListSkeleton({ count = 12 }: { count?: number })
   );
 }
 
-// Skeleton para detalhes do livro
+/**
+ * Componente skeleton que simula o layout da página de detalhes de um livro.
+ * Exibe placeholders para capa, título, descrição e informações técnicas.
+ * 
+ * @returns Elemento JSX do skeleton de detalhes do livro
+ * 
+ * @example
+ * ```tsx
+ * <BookDetailsSkeleton />
+ * ```
+ * 
+ * @category Components
+ */
 export function BookDetailsSkeleton() 
 {
   return (
@@ -47,7 +84,19 @@ export function BookDetailsSkeleton()
   );
 }
 
-// Skeleton para detalhes do autor
+/**
+ * Componente skeleton que simula o layout da seção de detalhes do autor.
+ * Exibe placeholders para foto, nome, datas e biografia do autor.
+ * 
+ * @returns Elemento JSX do skeleton de detalhes do autor
+ * 
+ * @example
+ * ```tsx
+ * <AuthorDetailsSkeleton />
+ * ```
+ * 
+ * @category Components
+ */
 export function AuthorDetailsSkeleton() 
 {
   return (
