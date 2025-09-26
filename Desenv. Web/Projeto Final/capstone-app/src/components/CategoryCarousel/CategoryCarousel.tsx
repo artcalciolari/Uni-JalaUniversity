@@ -58,7 +58,7 @@ export default function CategoryCarousel({ onCategorySelect, selectedCategory }:
 {
   return (
     <section className={styles.carouselContainer}>
-      <h3 className={styles.carouselTitle}>Explore por Categoria</h3>
+      <h3 className={styles.carouselTitle}>Ou explore por categoria</h3>
       <div className={styles.carousel}>
         <div className={styles.categoryList}>
           {categories.map((category) => (

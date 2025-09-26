@@ -11,7 +11,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-6);
   transition: all var(--transition-base);
 }
 
@@ -52,73 +51,7 @@
   background-clip: text;
 }
 
-/* Search Section */
-.searchSection {
-  flex: 1;
-  max-width: 600px;
-  position: relative;
-}
-
-/* Barra de pesquisa */
-.SearchBar {
-  position: relative;
-  display: flex;
-  align-items: center;
-  background: var(--surface-elevated);
-  border: 2px solid var(--border);
-  border-radius: var(--radius-xl);
-  padding: var(--space-3) var(--space-4);
-  transition: all var(--transition-fast);
-  box-shadow: var(--shadow-sm);
-}
-
-.SearchBar:focus-within {
-  border-color: var(--primary-500);
-  box-shadow: 0 0 0 3px rgba(241, 124, 46, 0.1);
-}
-
-/* Ícone de pesquisa */
-.searchIcon {
-  color: var(--text-tertiary);
-  font-size: var(--text-lg);
-  margin-right: var(--space-3);
-  flex-shrink: 0;
-  transition: color var(--transition-fast);
-}
-
-.SearchBar:focus-within .searchIcon {
-  color: var(--primary-500);
-}
-
-.SearchBar input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: var(--text-base);
-  color: var(--text-primary);
-  padding: var(--space-2) 0;
-}
-
-.SearchBar input::placeholder {
-  color: var(--text-tertiary);
-  font-weight: var(--font-normal);
-}
-
-/* Botão de pesquisa */
-.SearchBtn {
-  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
-  color: white;
-  border: none;
-  border-radius: var(--radius-lg);
-  padding: var(--space-3) var(--space-5);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  box-shadow: var(--shadow-sm);
-  margin-left: var(--space-2);
-}
+/* Search Section - Removida do Header, agora na HomePage como SearchBar separado */
 
 .SearchBtn:hover {
   background: linear-gradient(135deg, var(--primary-600), var(--primary-700));

@@ -19,22 +19,17 @@
 }
 
 /* Hero Section */
-.mainTitle {
+.heroSection {
   text-align: center;
-  margin-bottom: var(--space-8);
-  padding: var(--space-8) var(--space-4);
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  border-radius: var(--radius-3xl);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-lg);
+  margin-bottom: var(--space-6);
+  padding: var(--space-6) var(--space-4) var(--space-2) var(--space-4);
 }
 
-.mainTitle h1 {
+.mainTitle {
   font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl));
   font-weight: var(--font-extrabold);
   color: var(--text-primary);
-  margin: 0 0 var(--space-4) 0;
+  margin: 0 0 var(--space-3) 0;
   line-height: var(--leading-tight);
   background: linear-gradient(135deg, var(--primary-700), var(--primary-900));
   -webkit-background-clip: text;
@@ -42,21 +37,21 @@
   background-clip: text;
 }
 
-.mainTitle h2 {
-  font-size: clamp(var(--text-xl), 3vw, var(--text-3xl));
-  font-weight: var(--font-semibold);
+.subtitle {
+  font-size: clamp(var(--text-lg), 2.5vw, var(--text-xl));
+  font-weight: var(--font-medium);
   color: var(--text-secondary);
-  margin: 0 0 var(--space-3) 0;
+  margin: 0 0 var(--space-2) 0;
   line-height: var(--leading-snug);
 }
 
-.mainTitle h3 {
-  font-size: clamp(var(--text-base), 2vw, var(--text-lg));
+.description {
+  font-size: clamp(var(--text-sm), 1.5vw, var(--text-base));
   font-weight: var(--font-normal);
   color: var(--text-tertiary);
   margin: 0;
   line-height: var(--leading-relaxed);
-  max-width: 600px;
+  max-width: 500px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -132,9 +127,24 @@
     gap: var(--space-6);
   }
 
+  .heroSection {
+    padding: var(--space-5) var(--space-3) var(--space-2) var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+
   .mainTitle {
-    padding: var(--space-6) var(--space-3);
-    margin-bottom: var(--space-6);
+    font-size: clamp(var(--text-2xl), 5vw, var(--text-4xl));
+    margin-bottom: var(--space-2);
+  }
+
+  .subtitle {
+    font-size: clamp(var(--text-base), 3vw, var(--text-lg));
+    margin-bottom: var(--space-1);
+  }
+
+  .description {
+    font-size: clamp(var(--text-xs), 2vw, var(--text-sm));
+    max-width: 400px;
   }
 
   .bookList {
@@ -153,9 +163,24 @@
     gap: var(--space-4);
   }
 
-  .mainTitle {
-    padding: var(--space-4) var(--space-3);
+  .heroSection {
+    padding: var(--space-4) var(--space-3) var(--space-2) var(--space-3);
     margin-bottom: var(--space-4);
+  }
+
+  .mainTitle {
+    font-size: clamp(var(--text-2xl), 6vw, var(--text-3xl));
+    margin-bottom: var(--space-2);
+  }
+
+  .subtitle {
+    font-size: clamp(var(--text-base), 4vw, var(--text-lg));
+    margin-bottom: var(--space-1);
+  }
+
+  .description {
+    font-size: clamp(var(--text-xs), 3vw, var(--text-sm));
+    max-width: 300px;
   }
 
   .bookList {

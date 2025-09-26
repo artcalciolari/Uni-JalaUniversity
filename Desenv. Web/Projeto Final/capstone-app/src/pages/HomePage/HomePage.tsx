@@ -3,6 +3,7 @@ import styles from './HomePage.module.css';
 import BookCard from '../../components/BookCard/BookCard';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import SearchBar from '../../components/SearchBar/SearchBar';
 import CategoryCarousel from '../../components/CategoryCarousel/CategoryCarousel';
 import { BookListSkeleton } from '../../components/Skeleton/Skeleton';
 
@@ -62,34 +63,36 @@ export function HomePage()
 
   return (
     <div className={styles.pageGrid}>
-      <Header
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        searchBooks={searchBooks}
-      />
+      <Header />
       
       <main className={styles.body}>
-        <section className={styles.mainTitle}>
+        <section className={styles.heroSection}>
           {hasSearched ? (
             <>
-              <h1>Resultados da busca</h1>
-              <h2>"{lastSearchTerm}"</h2>  {/* Usar lastSearchTerm ao invés de searchTerm */}
-              <h3>Encontramos {books.length} livros para você</h3>
+              <h1 className={styles.mainTitle}>Resultados da busca</h1>
+              <h2 className={styles.subtitle}>"{lastSearchTerm}"</h2>
+              <p className={styles.description}>Encontramos {books.length} livros para você</p>
             </>
           ) : isBrowsingCategory ? (
             <>
-              <h1>Explorando {categoryNames[currentCategory] || currentCategory}</h1>
-              <h2>Descubra os melhores títulos desta categoria</h2>
-              <h3>Encontramos {books.length} livros selecionados para você</h3>
+              <h1 className={styles.mainTitle}>Explorando {categoryNames[currentCategory] || currentCategory}</h1>
+              <h2 className={styles.subtitle}>Descubra os melhores títulos desta categoria</h2>
+              <p className={styles.description}>Encontramos {books.length} livros selecionados para você</p>
             </>
           ) : (
             <>
-              <h1>Descubra Seu Próximo Livro</h1>
-              <h2>Explore nossa coleção cuidadosamente selecionada</h2>
-              <h3>Milhares de títulos esperando para serem descobertos por você</h3>
+              <h1 className={styles.mainTitle}>Descubra Seu Próximo Livro</h1>
+              <h2 className={styles.subtitle}>Explore nossa coleção cuidadosamente selecionada</h2>
+              <p className={styles.description}>Milhares de títulos esperando para serem descobertos por você</p>
             </>
           )}
         </section>
+
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          searchBooks={searchBooks}
+        />
 
         <CategoryCarousel 
           onCategorySelect={searchBooksByCategory}
