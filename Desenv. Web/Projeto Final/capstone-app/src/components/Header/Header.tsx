@@ -45,7 +45,9 @@ function Header({ className }: HeaderProps)
             alt='BookFlow Logo'
           />
         </Link>
-        <span className={styles.logoText}>BookFlow</span>
+        <Link to='/'>
+          <span className={styles.logoText}>BookFlow</span>
+        </Link>
       </div>
 
       {/* Actions Section */}
