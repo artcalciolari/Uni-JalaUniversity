@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage/HomePage';
 import { LoginPage } from './pages/Login&RegisterPages/LoginPage';
 import { RegisterPage } from './pages/Login&RegisterPages/RegisterPage';
 import { BookDetailsPage } from './pages/BookDetailsPage/BookDetails';
+import { ProfilePage } from './pages/ProfilePage/ProfilePage';
 import { SearchProvider } from './contexts/SearchContext';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import './App.css';
@@ -29,6 +30,7 @@ function App()
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage />} />
+        <Route path='/profile' element={<ProfilePage />} />
         <Route path='/book/:bKey' element={<BookDetailsPage />} />
       </Routes>
     </SearchProvider>

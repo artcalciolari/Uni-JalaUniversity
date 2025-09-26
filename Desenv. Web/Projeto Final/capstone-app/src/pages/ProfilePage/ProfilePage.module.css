@@ -1,0 +1,283 @@
+/* ProfilePage Styles */
+.pageGrid {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  gap: 0;
+  background: linear-gradient(135deg, var(--neutral-50) 0%, white 100%);
+  padding: 0;
+  justify-items: center;
+}
+
+.header {
+  grid-area: header;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.mainContent {
+  grid-area: main;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  padding: var(--space-6) var(--space-4);
+}
+
+.mainContent h1 {
+  text-align: center;
+  color: var(--primary-600);
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  margin: var(--space-6) 0 var(--space-8) 0;
+  background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Seção de informações do usuário */
+.userInfo {
+  margin-bottom: var(--space-8);
+}
+
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  background: white;
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--neutral-200);
+  margin-bottom: var(--space-6);
+}
+
+.userIcon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: var(--text-3xl);
+  flex-shrink: 0;
+}
+
+.userDetails h2 {
+  margin: 0 0 var(--space-2) 0;
+  color: var(--neutral-900);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+}
+
+.userEmail {
+  margin: 0 0 var(--space-2) 0;
+  color: var(--neutral-600);
+  font-size: var(--text-lg);
+}
+
+.userBirthdate {
+  margin: 0;
+  color: var(--neutral-500);
+  font-size: var(--text-base);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Grid de estatísticas */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-4);
+}
+
+.statCard {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: white;
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--neutral-200);
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.statCardWarning {
+  border-left: 4px solid var(--error-500);
+  background: linear-gradient(135deg, #fef2f2 0%, white 100%);
+}
+
+.statIcon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: var(--text-xl);
+  flex-shrink: 0;
+}
+
+.statCardWarning .statIcon {
+  background: linear-gradient(135deg, var(--error-500), var(--error-600));
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statNumber {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--neutral-900);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: var(--text-sm);
+  color: var(--neutral-600);
+  margin-top: var(--space-1);
+}
+
+/* Seção de empréstimos */
+.loansSection {
+  margin-top: var(--space-8);
+}
+
+.loansSection h2 {
+  color: var(--neutral-900);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  margin: 0 0 var(--space-6) 0;
+  padding-bottom: var(--space-3);
+  border-bottom: 2px solid var(--primary-200);
+}
+
+.loansGrid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
+/* Estado vazio */
+.emptyState {
+  text-align: center;
+  padding: var(--space-12) var(--space-6);
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--neutral-200);
+}
+
+.emptyIcon {
+  font-size: 4rem;
+  color: var(--neutral-300);
+  margin-bottom: var(--space-4);
+}
+
+.emptyState h3 {
+  color: var(--neutral-700);
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.emptyState p {
+  color: var(--neutral-600);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  margin: 0 0 var(--space-2) 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.emptyState p:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .mainContent {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .mainContent h1 {
+    font-size: var(--text-2xl);
+    margin: var(--space-4) 0 var(--space-6) 0;
+  }
+
+  .userCard {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-4);
+  }
+
+  .userIcon {
+    width: 60px;
+    height: 60px;
+    font-size: var(--text-2xl);
+  }
+
+  .userDetails h2 {
+    font-size: var(--text-xl);
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .loansGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .emptyState {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .emptyIcon {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .userCard {
+    padding: var(--space-4);
+  }
+
+  .statCard {
+    padding: var(--space-4);
+  }
+
+  .statIcon {
+    width: 40px;
+    height: 40px;
+    font-size: var(--text-lg);
+  }
+
+  .statNumber {
+    font-size: var(--text-xl);
+  }
+}

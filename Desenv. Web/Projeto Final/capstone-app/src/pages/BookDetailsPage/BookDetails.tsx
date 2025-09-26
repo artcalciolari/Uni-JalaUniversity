@@ -80,7 +80,7 @@ export function BookDetailsPage()
                 ) : (currentUser ? (
                   <button
                     className={styles.reserveBtn}
-                    onClick={() => addLoan(bKey!, bookDetails.title, currentUser.email)}
+                    onClick={() => addLoan(bKey!, bookDetails.title, bookDetails.coverId, currentUser.email)}
                   >Reservar</button>) : (null)
                 )}
               </div>

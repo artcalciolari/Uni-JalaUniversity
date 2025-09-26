@@ -1,7 +1,7 @@
 {
   "entryPoints": [
     "src/main.tsx",
-    "src/contexts/SearchContext.tsx",
+    "src/contexts/**/*.tsx",
     "src/components/**/*.tsx",
     "src/pages/**/*.tsx",
     "src/services/api.ts"

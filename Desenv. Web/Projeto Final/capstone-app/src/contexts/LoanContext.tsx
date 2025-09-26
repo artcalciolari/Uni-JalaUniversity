@@ -12,6 +12,8 @@ export type Loan = {
   bookKey: string,
   /** Título do livro emprestado */
   bookTitle: string,
+  /** ID da capa do livro na API Open Library */
+  coverId?: number,
   /** Data de devolução do empréstimo */
   returnDate: Date;
 }
@@ -24,7 +26,7 @@ export interface LoanContextType {
   /** Lista de todos os empréstimos ativos */
   loans: Loan[];
   /** Função para adicionar um novo empréstimo */
-  addLoan: (bookKey: string, bookTitle: string, userEmail: string) => void;
+  addLoan: (bookKey: string, bookTitle: string, coverId: number, userEmail: string) => void;
   /** Função para remover um empréstimo */
   removeLoan: (bookKey: string) => void;
   /** Função para verificar se um livro está emprestado */
@@ -68,7 +70,7 @@ export function LoanProvider({ children }: { children: ReactNode })
     localStorage.setItem('loans', JSON.stringify(loans));
   }, [loans]);
 
-  const addLoan = (bookKey: string, bookTitle: string, userEmail: string) => 
+  const addLoan = (bookKey: string, bookTitle: string, coverId: number, userEmail: string) => 
   {
     const loans = JSON.parse(localStorage.getItem('loans') || '[]') as Loan[];
 
@@ -85,6 +87,7 @@ export function LoanProvider({ children }: { children: ReactNode })
       userEmail,
       bookKey,
       bookTitle,
+      coverId,
       returnDate,
     };
 
