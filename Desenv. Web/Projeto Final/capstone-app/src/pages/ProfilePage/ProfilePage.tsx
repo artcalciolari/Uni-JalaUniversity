@@ -1,6 +1,5 @@
 import { useAuth } from '../../contexts/AuthContext';
 import { useLending } from '../../contexts/LoanContext';
-import { useSearch } from '../../contexts/SearchContext';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import LoanCard from '../../components/LoanCard/LoanCard';
@@ -32,7 +31,6 @@ export function ProfilePage()
 {
   const { currentUser } = useAuth();
   const { loans } = useLending();
-  const { searchTerm, setSearchTerm, searchBooks } = useSearch();
 
   // Redireciona para login se não estiver autenticado
   if (!currentUser) 
@@ -48,15 +46,9 @@ export function ProfilePage()
   const overdueLoans = userLoans.filter(loan => new Date(loan.returnDate) < new Date()).length;
 
   return (
-    <div className={styles.pageGrid}>
-      <div className={styles.header}>
-        <Header 
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          searchBooks={searchBooks}
-        />
-      </div>
-
+    <div className={styles.pageContainer}>
+      <Header />  {/* Remover as props searchTerm, setSearchTerm e searchBooks */}
+      
       <main className={styles.mainContent}>
         <h1>Meu Perfil</h1>
         
@@ -128,3 +120,5 @@ export function ProfilePage()
     </div>
   );
 }
+
+export default ProfilePage;

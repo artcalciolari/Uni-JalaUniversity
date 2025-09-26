@@ -1,9 +1,10 @@
 import styles from './CategoryCarousel.module.css';
 
 /**
- * Interface para as propriedades do carrossel de categorias
+ * Propriedades do componente CategoryCarousel
+ * @category Components
  */
-interface CategoryCarouselProps {
+export interface CategoryCarouselProps {
   /** Função chamada quando uma categoria é selecionada */
   onCategorySelect: (category: string) => void;
   /** Categoria atualmente selecionada */

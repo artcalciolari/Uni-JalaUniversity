@@ -1,4 +1,3 @@
-import { useSearch } from '../../contexts/SearchContext';
 import { useBookDetails } from '../../services/api';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -45,20 +44,12 @@ export function BookDetailsPage()
 
   const { addLoan, isBookLoaned } = useLending();
   
-  /** Contexto de busca para manter funcionalidade de pesquisa no header */
-  const { searchTerm, setSearchTerm, searchBooks } = useSearch();
-  
   /** Hook para buscar detalhes específicos do livro */
   const { bookDetails, isLoading } = useBookDetails(bKey || '');
 
   return (
-    <div className={styles.pageGrid}>
-      <Header
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        searchBooks={searchBooks}
-      />
-
+    <div className={styles.pageContainer}>
+      <Header />  {/* Remover as props searchTerm, setSearchTerm e searchBooks */}
       <main className={styles.mainContent}>
         {isLoading ? (
           <BookDetailsSkeleton />
