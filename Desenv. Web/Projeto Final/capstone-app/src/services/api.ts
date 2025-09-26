@@ -100,18 +100,22 @@ export type AuthorDetails = {
 
 
 /**
- * Hook personalizado para gerenciar lista de livros e busca.
- * Carrega livros de ficção científica por padrão e permite busca personalizada.
+ * Hook personalizado para gerenciar lista de livros, busca e navegação por categorias.
+ * Carrega livros de ficção científica por padrão e permite busca personalizada e por categoria.
  * 
- * @returns Objeto contendo lista de livros, estado de loading e função de busca
+ * @returns Objeto contendo lista de livros, estado de loading, funções de busca e categoria atual
  * 
  * @example
  * ```tsx
  * function BookList() {
- *   const { books, isLoading, hasSearched, searchBooks } = useBooks();
+ *   const { books, isLoading, hasSearched, searchBooks, searchBooksByCategory, currentCategory } = useBooks();
  *   
  *   const handleSearch = (query: string) => {
  *     searchBooks(query);
+ *   };
+ *   
+ *   const handleCategorySelect = (category: string) => {
+ *     searchBooksByCategory(category);
  *   };
  *   
  *   if (isLoading) return <div>Carregando...</div>;
@@ -131,6 +135,9 @@ export function useBooks()
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [hasSearched, setHasSearched] = useState(false);
+  const [isBrowsingCategory, setIsBrowsingCategory] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState<string>('science_fiction');
+  const [lastSearchTerm, setLastSearchTerm] = useState<string>('');
 
   useEffect(() => 
   {
@@ -178,6 +185,11 @@ export function useBooks()
     try 
     {
       setIsLoading(true);
+      // Definir estados de UI imediatamente para feedback visual consistente
+      setHasSearched(true);
+      setIsBrowsingCategory(false);
+      setLastSearchTerm(query);  // Armazenar o termo da busca executada
+      
       const response = await fetch(`https://openlibrary.org/search.json?q=${query}`);
       const data = await response.json();
 
@@ -197,12 +209,48 @@ export function useBooks()
     finally 
     {
       setIsLoading(false);
-      setHasSearched(true);
     }
-
   };
 
-  return { books, isLoading, hasSearched, searchBooks };
+  /**
+   * Busca livros por categoria específica.
+   * Substitui a lista atual de livros pelos resultados da categoria selecionada.
+   * 
+   * @param category - Categoria/assunto para buscar livros
+   */
+  const searchBooksByCategory = async(category: string) => 
+  {
+    try 
+    {
+      setIsLoading(true);
+      setCurrentCategory(category);
+      setIsBrowsingCategory(true);
+      setHasSearched(false);
+      
+      const response = await fetch(`https://openlibrary.org/subjects/${category}.json?limit=20`);
+      const data = await response.json();
+
+      const normalizedBooks = data.works.map((book: ApiBookResponse) => ({
+        key: book.key,
+        title: book.title,
+        authors: book.authors,
+        cover_id: book.cover_id,
+      }));
+
+      setBooks(normalizedBooks);
+    }
+    catch (error) 
+    {
+      console.error('Error fetching books by category:', error);
+    }
+    finally 
+    {
+      setIsLoading(false);
+      // Removido: setHasSearched(false) e setIsBrowsingCategory(true) - agora definidos no início
+    }
+  };
+
+  return { books, isLoading, hasSearched, isBrowsingCategory, searchBooks, searchBooksByCategory, currentCategory, lastSearchTerm };
 }
 
 /**

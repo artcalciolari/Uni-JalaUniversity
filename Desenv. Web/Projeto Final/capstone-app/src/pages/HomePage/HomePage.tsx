@@ -3,6 +3,7 @@ import styles from './HomePage.module.css';
 import BookCard from '../../components/BookCard/BookCard';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
+import CategoryCarousel from '../../components/CategoryCarousel/CategoryCarousel';
 import { BookListSkeleton } from '../../components/Skeleton/Skeleton';
 
 /**
@@ -28,10 +29,36 @@ import { BookListSkeleton } from '../../components/Skeleton/Skeleton';
  * 
  * @category Pages
  */
+/**
+ * Mapeamento de categorias para nomes amigáveis
+ */
+const categoryNames: Record<string, string> = {
+  fiction: 'Ficção',
+  science_fiction: 'Ficção Científica',
+  fantasy: 'Fantasia',
+  mystery: 'Mistério',
+  romance: 'Romance',
+  horror: 'Terror',
+  biography: 'Biografia',
+  history: 'História',
+  science: 'Ciência',
+  philosophy: 'Filosofia',
+  psychology: 'Psicologia',
+  business: 'Negócios',
+  self_help: 'Autoajuda',
+  cooking: 'Culinária',
+  art: 'Arte',
+  music: 'Música',
+  travel: 'Viagem',
+  health: 'Saúde',
+  sports: 'Esportes',
+  technology: 'Tecnologia',
+};
+
 export function HomePage() 
 {
   /** Contexto de busca com dados de livros e controles de pesquisa */
-  const { books, searchTerm, setSearchTerm, searchBooks, hasSearched, isLoading } = useSearch();
+  const { books, searchTerm, setSearchTerm, searchBooks, searchBooksByCategory, currentCategory, hasSearched, isBrowsingCategory, isLoading, lastSearchTerm } = useSearch();
 
   return (
     <div className={styles.pageGrid}>
@@ -46,8 +73,14 @@ export function HomePage()
           {hasSearched ? (
             <>
               <h1>Resultados da busca</h1>
-              <h2>"{searchTerm}"</h2>
+              <h2>"{lastSearchTerm}"</h2>  {/* Usar lastSearchTerm ao invés de searchTerm */}
               <h3>Encontramos {books.length} livros para você</h3>
+            </>
+          ) : isBrowsingCategory ? (
+            <>
+              <h1>Explorando {categoryNames[currentCategory] || currentCategory}</h1>
+              <h2>Descubra os melhores títulos desta categoria</h2>
+              <h3>Encontramos {books.length} livros selecionados para você</h3>
             </>
           ) : (
             <>
@@ -58,7 +91,10 @@ export function HomePage()
           )}
         </section>
 
-        <hr className={styles.divider} />
+        <CategoryCarousel 
+          onCategorySelect={searchBooksByCategory}
+          selectedCategory={currentCategory}
+        />
 
         <section className={styles.bookList}>
           {isLoading ? (

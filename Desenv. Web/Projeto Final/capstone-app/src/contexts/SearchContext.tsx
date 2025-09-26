@@ -28,12 +28,20 @@ export interface SearchContextType {
   setSearchTerm: (term: string) => void;
   /** Função para executar a busca na API do Open Library */
   searchBooks: (term: string) => void;
+  /** Função para buscar livros por categoria */
+  searchBooksByCategory: (category: string) => void;
+  /** Categoria atualmente selecionada */
+  currentCategory: string;
   /** Indica se uma busca foi realizada pelo usuário */
   hasSearched: boolean;
+  /** Indica se está navegando por categoria */
+  isBrowsingCategory: boolean;
   /** Indica se está carregando dados da API */
   isLoading: boolean;
   /** Lista de livros encontrados na busca */
   books: Book[];
+  /** Termo da última busca executada */
+  lastSearchTerm: string;
 }
 
 /**
@@ -67,11 +75,24 @@ const SearchContext = createContext<SearchContextType | null>(null);
  */
 export function SearchProvider({ children }: { children: ReactNode }) 
 {
-  const { searchBooks, hasSearched, isLoading, books } = useBooks();
+  const { books, isLoading, hasSearched, isBrowsingCategory, searchBooks, searchBooksByCategory, currentCategory, lastSearchTerm } = useBooks();
   const [searchTerm, setSearchTerm] = useState<string>('');
 
+  const value: SearchContextType = {
+    searchTerm, 
+    setSearchTerm, 
+    searchBooks, 
+    searchBooksByCategory, 
+    currentCategory, 
+    hasSearched, 
+    isBrowsingCategory,
+    isLoading, 
+    books, 
+    lastSearchTerm,
+  };
+
   return (
-    <SearchContext.Provider value={{ searchTerm, setSearchTerm, searchBooks, hasSearched, isLoading, books }}>
+    <SearchContext.Provider value={value}>
       {children}
     </SearchContext.Provider>
   );
