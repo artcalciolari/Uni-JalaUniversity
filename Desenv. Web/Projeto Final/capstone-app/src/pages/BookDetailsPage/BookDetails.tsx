@@ -1,9 +1,11 @@
 import { useBookDetails } from '../../services/api';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useSearch } from '../../contexts/SearchContext';
 import { BookDetailsSkeleton } from '../../components/Skeleton/Skeleton';
 import { useLending } from '../../contexts/LoanContext';
 import Header from '../../components/Header/Header';
+import SearchBar from '../../components/SearchBar/SearchBar';
 import BookCover from '../../components/BookDetails/BookCover/BookCover';
 import BookInfo from '../../components/BookDetails/BookInfo/BookInfo';
 import AuthorDetails from '../../components/AuthorDetails/AuthorDetails';
@@ -41,6 +43,7 @@ export function BookDetailsPage()
   const { bKey } = useParams();
 
   const { currentUser } = useAuth();
+  const { searchTerm, setSearchTerm, searchBooks } = useSearch();
 
   const { addLoan, isBookLoaned } = useLending();
   
@@ -49,7 +52,16 @@ export function BookDetailsPage()
 
   return (
     <div className={styles.pageContainer}>
-      <Header />  {/* Remover as props searchTerm, setSearchTerm e searchBooks */}
+      <Header />
+      
+      <section className={styles.searchSection}>
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          searchBooks={searchBooks}
+        />
+      </section>
+      
       <main className={styles.mainContent}>
         {isLoading ? (
           <BookDetailsSkeleton />

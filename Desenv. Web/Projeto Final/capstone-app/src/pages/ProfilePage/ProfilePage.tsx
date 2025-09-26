@@ -1,6 +1,8 @@
 import { useAuth } from '../../contexts/AuthContext';
+import { useSearch } from '../../contexts/SearchContext';
 import { useLending } from '../../contexts/LoanContext';
 import Header from '../../components/Header/Header';
+import SearchBar from '../../components/SearchBar/SearchBar';
 import Footer from '../../components/Footer/Footer';
 import LoanCard from '../../components/LoanCard/LoanCard';
 import { Navigate } from 'react-router-dom';
@@ -30,6 +32,7 @@ import { FaUser, FaBook, FaCalendarAlt } from 'react-icons/fa';
 export function ProfilePage() 
 {
   const { currentUser } = useAuth();
+  const { searchTerm, setSearchTerm, searchBooks } = useSearch();
   const { loans } = useLending();
 
   // Redireciona para login se não estiver autenticado
@@ -46,8 +49,16 @@ export function ProfilePage()
   const overdueLoans = userLoans.filter(loan => new Date(loan.returnDate) < new Date()).length;
 
   return (
-    <div className={styles.pageContainer}>
-      <Header />  {/* Remover as props searchTerm, setSearchTerm e searchBooks */}
+    <div className={styles.profileContainer}>
+      <Header />
+      
+      <section className={styles.searchSection}>
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          searchBooks={searchBooks}
+        />
+      </section>
       
       <main className={styles.mainContent}>
         <h1>Meu Perfil</h1>
