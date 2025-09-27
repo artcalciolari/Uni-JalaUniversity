@@ -1,0 +1,42 @@
+.home-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.search-section {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.search-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.search-section p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.weather-section {
+  margin-top: 2rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .home-page {
+    padding: 1rem;
+  }
+
+  .search-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .search-section p {
+    font-size: 1rem;
+  }
+}
