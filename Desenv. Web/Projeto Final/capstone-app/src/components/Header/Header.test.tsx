@@ -1,8 +1,10 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, test, expect } from 'vitest';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '../../contexts/AuthContext';
 import Header from './Header';
+import '@testing-library/jest-dom';
 
 // Wrapper para fornecer contexto necessário
 const TestWrapper = ({ children }: { children: React.ReactNode }) => (

@@ -1,6 +1,20 @@
+# Test files
 **/*.test.ts
 **/*.test.tsx
 **/*.spec.ts
 **/*.spec.tsx
 src/setupTests.ts
+
+# Test configuration
 tsconfig.test.json
+vitest.config.ts
+**/__tests__/
+**/__mocks__/
+
+# Development dependencies and configs
+eslint.config.mjs
+typedoc.json
+README-testes.md
+
+# Documentation
+docs/

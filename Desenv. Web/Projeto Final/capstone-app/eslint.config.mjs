@@ -10,6 +10,21 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 
 export default defineConfig([
+  // Ignore generated files
+  {
+    ignores: [
+      'docs/**/*',
+      'dist/**/*',
+      'node_modules/**/*',
+      '**/*.test.ts',
+      '**/*.test.tsx',
+      '**/*.spec.ts',
+      '**/*.spec.tsx',
+      'src/setupTests.ts',
+      'vitest.config.ts',
+    ],
+  },
+  
   // Base (all files)
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
