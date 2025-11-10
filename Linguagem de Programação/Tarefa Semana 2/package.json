@@ -1,0 +1,24 @@
+{
+  "name": "sistema-funcionarios",
+  "version": "1.0.0",
+  "description": "Sistema de gerenciamento de funcionários usando TypeScript com POO",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "watch": "tsc -w"
+  },
+  "keywords": [
+    "typescript",
+    "poo",
+    "orientacao-objetos"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
