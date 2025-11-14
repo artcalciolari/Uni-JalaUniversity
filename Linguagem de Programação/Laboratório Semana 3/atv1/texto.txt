@@ -1,0 +1,6 @@
+A programação é uma habilidade essencial no mundo moderno. A programação permite criar soluções inovadoras para problemas complexos. 
+Através da programação, podemos automatizar tarefas repetitivas e aumentar a eficiência. A programação não é apenas sobre escrever código, 
+mas também sobre resolver problemas de forma criativa. Python e JavaScript são duas das linguagens de programação mais populares atualmente. 
+Python é conhecida por sua sintaxe clara e legível, enquanto JavaScript domina o desenvolvimento web. Aprender programação requer prática 
+constante e dedicação. A programação funcional e a programação orientada a objetos são paradigmas importantes que todo desenvolvedor 
+deve conhecer. Com o tempo e prática, qualquer pessoa pode se tornar um bom programador.
