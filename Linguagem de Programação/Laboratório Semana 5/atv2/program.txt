@@ -1,0 +1,4 @@
+PRINT "Laboratório Semana 5 JalaU"
+SOMA 3, 7
+SUBTRAÇÃO 10, 4
+PRINT "Teste finalizado"
