@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Wasm Python Shapes</title>
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+</head>
+<body>
+    <h2>Python WebAssembly Canvas</h2>
+    <p>Renderizando figuras via Python...</p>
+    
+    <canvas id="myCanvas" width="500" height="300" style="border:1px solid #000;"></canvas>
+
+    <script type="py">
+        from pyscript import document
+        from js import window
+        import math
+
+        def draw_shapes():
+            canvas = document.getElementById("myCanvas")
+            ctx = canvas.getContext("2d")
+
+            # 1. Retângulo (Vermelho)
+            ctx.fillStyle = "red"
+            ctx.fillRect(50, 50, 150, 100)
+
+            # 2. Círculo (Azul)
+            ctx.beginPath()
+            ctx.arc(350, 100, 50, 0, 2 * math.pi)
+            ctx.fillStyle = "blue"
+            ctx.fill()
+            ctx.stroke()
+
+            # 3. Triângulo (Verde)
+            ctx.beginPath()
+            ctx.moveTo(275, 200)
+            ctx.lineTo(200, 280)
+            ctx.lineTo(350, 280)
+            ctx.closePath()
+            ctx.fillStyle = "green"
+            ctx.fill()
+            
+            # Texto
+            ctx.fillStyle = "black"
+            ctx.font = "20px Arial"
+            ctx.fillText("Python via Wasm", 180, 30)
+
+        draw_shapes()
+    </script>
+</body>
+</html>

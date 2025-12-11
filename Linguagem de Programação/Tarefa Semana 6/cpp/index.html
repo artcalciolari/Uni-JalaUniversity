@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Wasm C++ Calc</title>
+</head>
+<body>
+    <h2>C++ WebAssembly Calculator</h2>
+    <input type="number" id="num1" value="10">
+    <select id="op">
+        <option value="0">+</option>
+        <option value="1">-</option>
+        <option value="2">*</option>
+        <option value="3">/</option>
+    </select>
+    <input type="number" id="num2" value="5">
+    <button onclick="runCalc()">Calcular</button>
+    
+    <h3>Resultado: <span id="result">-</span></h3>
+
+    <script src="math.js"></script>
+    <script>
+        function runCalc() {
+            const a = parseFloat(document.getElementById('num1').value);
+            const b = parseFloat(document.getElementById('num2').value);
+            const op = parseInt(document.getElementById('op').value);
+
+            // ccall chama a função exportada do C++
+            // Assinatura: 'calculate', return type, [arg types], [args]
+            const res = Module.ccall(
+                'calculate', 
+                'number', 
+                ['number', 'number', 'number'], 
+                [a, b, op]
+            );
+
+            document.getElementById('result').innerText = res;
+        }
+    </script>
+</body>
+</html>
